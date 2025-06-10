@@ -19,6 +19,9 @@ public class ChatRoom {
     @Column(name = "CROOM_IDX")
     private Integer croomIdx;
 
+    @Column(name = "CROOM_TITLE", nullable = false, length = 50)
+    private String croomTitle;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_IDX", nullable = false)
     private User user;

@@ -143,9 +143,10 @@
                 if (!res.ok) throw new Error("서버 에러 발생");
                 return res.json();
             })
-            .then((data) => {
-                if (data === true) {
+            .then((userIdx) => {
+                if (userIdx != null) {
                     // 로그인 성공
+                    sessionStorage.setItem("user", userIdx);
                     window.location.href = "/main"; // 원하는 페이지 이동
                 } else {
                     // 로그인 실패
