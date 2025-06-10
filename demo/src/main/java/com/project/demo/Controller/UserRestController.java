@@ -17,7 +17,7 @@ public class UserRestController {
 
     // 로그인 로직
     @PostMapping("/login")
-    public ResponseEntity<Boolean> login(@RequestBody User user, HttpSession session) {
+    public ResponseEntity<Integer> login(@RequestBody User user, HttpSession session) {
 
         String email = user.getUserEmail();
         String password = user.getUserPwd();
@@ -29,10 +29,10 @@ public class UserRestController {
 
         // 유효성 체크
         if (result != null){
-            session.setAttribute("user", user);
-            return ResponseEntity.ok(true);
+            session.setAttribute("user", result.getUserIdx());
+            return ResponseEntity.ok(result.getUserIdx());
         } else {
-            return ResponseEntity.status(401).body(false);
+            return ResponseEntity.status(401).body(null);
         }
     }
 

@@ -1,377 +1,314 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>E-지원</title>
     <style>
-      /* --- 기본 레이아웃 --- */
-      body {
-        margin: 0;
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #000;
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      }
-      .wrapper {
-        display: flex;
-        width: 90vw;
-        height: 90vh;
-        max-width: 1200px;
-        max-height: 800px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        overflow: hidden;
-        border-radius: 8px;
-        background-color: #fff;
-      }
-      .sidebar {
-        width: 240px;
-        background-color: #6d4c41;
-        color: #fff;
-        display: flex;
-        flex-direction: column;
-        padding: 20px;
-      }
-      .sidebar .team-name {
-        margin: 0 0 20px;
-        font-size: 1.2rem;
-        text-align: center;
-      }
-      .sidebar button {
-        background: #ff7043;
-        border: none;
-        color: #fff;
-        padding: 10px;
-        margin-bottom: 10px;
-        border-radius: 4px;
-        cursor: pointer;
-        text-align: left;
-      }
-      .sidebar button:hover {
-        background: #f4511e;
-      }
-      .chat-list {
-        flex: 1;
-        overflow-y: auto;
-      }
-      .chat-item {
-        position: relative;
-        padding: 8px 32px 8px 8px;
-        border-radius: 4px;
-        cursor: pointer;
-        margin-bottom: 4px;
-        background: #a1887f;
-        user-select: none;
-      }
-      .chat-item:hover {
-        background: #8d6e63;
-      }
-      .chat-item .delete-btn {
-        position: absolute;
-        right: 8px;
-        top: 8px;
-        background: transparent;
-        border: none;
-        color: #fff;
-        font-size: 1rem;
-        cursor: pointer;
-      }
-      .chat-item .delete-btn:hover {
-        color: #ffcccb;
-      }
-      .chat-area {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        background-color: #fff;
-      }
-      .chat-header {
-        padding: 20px;
-        border-bottom: 1px solid #e0e0e0;
-        font-weight: bold;
-      }
-      .messages {
-        flex: 1;
-        padding: 20px;
-        overflow-y: auto;
-        background-color: #f9f9f9;
-        display: flex;
-        flex-direction: column;
-      }
-      .message {
-        position: relative;
-        margin-bottom: 16px;
-        max-width: 70%;
-        line-height: 1.4;
-      }
-      .message.bot {
-        background-color: #fff9c4;
-        color: #827717;
-        padding: 10px 14px;
-        border-radius: 12px 12px 12px 0;
-        margin-right: auto;
-      }
-      .message.bot::before {
-        content: "";
-        position: absolute;
-        left: -12px;
-        top: 12px;
-        border-width: 12px 12px 12px 0;
-        border-style: solid;
-        border-color: transparent #fff9c4 transparent transparent;
-      }
-      .message.user {
-        background-color: #e0f7fa;
-        color: #00796b;
-        padding: 10px 14px;
-        border-radius: 12px 12px 0 12px;
-        margin-left: auto;
-      }
-      .message.user::after {
-        content: "";
-        position: absolute;
-        right: -12px;
-        top: 12px;
-        border-width: 12px 0 12px 12px;
-        border-style: solid;
-        border-color: transparent transparent transparent #e0f7fa;
-      }
-      .input-area {
-        padding: 10px 20px;
-        border-top: 1px solid #e0e0e0;
-        display: flex;
-        align-items: center;
-        background-color: #f1f1f1;
-      }
-      .input-area input {
-        flex: 1;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 1rem;
-        background-color: #fff;
-      }
-      .input-area button {
-        margin-left: 10px;
-        padding: 10px 16px;
-        background-color: #ff7043;
-        border: none;
-        color: #fff;
-        border-radius: 4px;
-        cursor: pointer;
-      }
-      .input-area button:hover {
-        background-color: #f4511e;
-      }
-      /* --- 모달창 스타일 --- */
-      .modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        display: none;
-        justify-content: center;
-        align-items: center;
-        z-index: 100;
-      }
-      .modal {
-        background: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        width: 300px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        display: flex;
-        flex-direction: column;
-      }
-      .modal label {
-        margin-bottom: 8px;
-        font-weight: bold;
-      }
-      .modal input {
-        padding: 8px;
-        margin-bottom: 12px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 1rem;
-      }
-      .modal .buttons {
-        display: flex;
-        justify-content: flex-end;
-      }
-      .modal button {
-        padding: 8px 12px;
-        margin-left: 8px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-      }
-      .btn-cancel {
-        background: #ccc;
-        color: #333;
-      }
-      .btn-ok {
-        background: #ff7043;
-        color: #fff;
-      }
+        /* --- 기본 레이아웃 --- */
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .wrapper {
+            display: flex;
+            width: 90vw;
+            height: 90vh;
+            max-width: 1200px;
+            max-height: 800px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+
+        .sidebar {
+            width: 240px;
+            background-color: #6d4c41;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .sidebar .team-name {
+            margin: 0 0 20px;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+
+        .sidebar button {
+            background: #ff7043;
+            border: none;
+            color: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .sidebar button:hover {
+            background: #f4511e;
+        }
+
+        .chat-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .chat-item {
+            position: relative;
+            padding: 8px 32px 8px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 4px;
+            background: #a1887f;
+            user-select: none;
+        }
+
+        .chat-item:hover {
+            background: #8d6e63;
+        }
+
+        .chat-item .delete-btn {
+            position: absolute;
+            right: 8px;
+            top: 8px;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .chat-item .delete-btn:hover {
+            color: #ffcccb;
+        }
+
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: #fff;
+        }
+
+        .chat-header {
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            font-weight: bold;
+        }
+
+        .messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message {
+            position: relative;
+            margin-bottom: 16px;
+            max-width: 70%;
+            line-height: 1.4;
+        }
+
+        .message.bot {
+            background-color: #fff9c4;
+            color: #827717;
+            padding: 10px 14px;
+            border-radius: 12px 12px 12px 0;
+            margin-right: auto;
+        }
+
+        .message.bot::before {
+            content: "";
+            position: absolute;
+            left: -12px;
+            top: 12px;
+            border-width: 12px 12px 12px 0;
+            border-style: solid;
+            border-color: transparent #fff9c4 transparent transparent;
+        }
+
+        .message.user {
+            background-color: #e0f7fa;
+            color: #00796b;
+            padding: 10px 14px;
+            border-radius: 12px 12px 0 12px;
+            margin-left: auto;
+        }
+
+        .message.user::after {
+            content: "";
+            position: absolute;
+            right: -12px;
+            top: 12px;
+            border-width: 12px 0 12px 12px;
+            border-style: solid;
+            border-color: transparent transparent transparent #e0f7fa;
+        }
+
+        .input-area {
+            padding: 10px 20px;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            background-color: #f1f1f1;
+        }
+
+        .input-area input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+            background-color: #fff;
+        }
+
+        .input-area button {
+            margin-left: 10px;
+            padding: 10px 16px;
+            background-color: #ff7043;
+            border: none;
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .input-area button:hover {
+            background-color: #f4511e;
+        }
+
+        /* --- 모달창 스타일 --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .modal {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal label {
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .modal input {
+            padding: 8px;
+            margin-bottom: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .modal .buttons {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .modal button {
+            padding: 8px 12px;
+            margin-left: 8px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn-cancel {
+            background: #ccc;
+            color: #333;
+        }
+
+        .btn-ok {
+            background: #ff7043;
+            color: #fff;
+        }
+
+        .logout-btn {
+            background: #e74c3c;
+            border: none;
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* main chat div */
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 16px;
+            height: 48px;
+        }
+
     </style>
-  </head>
-  <body>
-    <div class="wrapper">
-      <div class="sidebar">
+</head>
+<body>
+<div class="wrapper">
+
+    <div class="sidebar">
         <h2 class="team-name">닫을결심</h2>
         <button id="newChatBtn">새 채팅</button>
         <div class="chat-list" id="chatList"></div>
-      </div>
-      <div class="chat-area">
-        <div class="chat-header" id="chatHeader">새 채팅</div>
+    </div>
+
+    <div class="chat-area">
+        <div class="chat-header" id="chatHeader">
+            <span id="chatTitle">새 채팅</span>
+            <button class="logout-btn" id="logoutBtn">로그아웃</button>
+        </div>
+
+
         <div class="messages" id="messages">
-          <div class="message bot">안녕하세요! 무엇을 도와드릴까요?</div>
+            <div class="message bot">안녕하세요! 무엇을 도와드릴까요?</div>
         </div>
+
         <div class="input-area">
-          <input
-            type="text"
-            id="userInput"
-            placeholder="메시지를 입력하세요..."
-          />
-          <button id="sendBtn">전송</button>
+            <input id="userInput" placeholder="메시지를 입력하세요..." type="text"/>
+            <button id="sendBtn">전송</button>
         </div>
-      </div>
     </div>
-    <div class="modal-overlay" id="modalOverlay">
-      <div class="modal">
+</div>
+
+<!--모달 창-->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
         <label for="modalInput">채팅 제목을 입력하세요</label>
-        <input type="text" id="modalInput" />
+        <input id="modalInput" type="text"/>
         <div class="buttons">
-          <button class="btn-cancel" id="modalCancel">취소</button>
-          <button class="btn-ok" id="modalOk">확인</button>
+            <button class="btn-cancel" id="modalCancel">취소</button>
+            <button class="btn-ok" id="modalOk">확인</button>
         </div>
-      </div>
     </div>
-    <script>
-      // 1) 주요 DOM 요소들을 변수에 저장
-      const chatList = document.getElementById("chatList");
-      const chatHeader = document.getElementById("chatHeader");
-      const messages = document.getElementById("messages");
-      const newChatBtn = document.getElementById("newChatBtn");
-      const sendBtn = document.getElementById("sendBtn");
-      const userInput = document.getElementById("userInput");
+</div>
 
-      // 모달 관련 요소들
-      const modalOverlay = document.getElementById("modalOverlay");
-      const modalInput = document.getElementById("modalInput");
-      const modalCancel = document.getElementById("modalCancel");
-      const modalOk = document.getElementById("modalOk");
+<script src="assets/js/main.js"></script>
+<script src="assets/js/chat.js"></script>
 
-      let currentCallback = null;
-
-      // 2) 모달 열기/닫기 제어 함수
-      function openModal(initial, cb) {
-        modalInput.value = initial;
-        modalOverlay.style.display = "flex";
-        modalInput.focus();
-        currentCallback = cb;
-      }
-
-      // 모달을 열 때 초기값과 콜백 함수를 설정
-      function closeModal() {
-        modalOverlay.style.display = "none";
-        currentCallback = null;
-      }
-
-      // 모달을 닫을 때 콜백 함수를 초기화
-      modalCancel.addEventListener("click", closeModal);
-      modalOk.addEventListener("click", () => {
-        const val = modalInput.value.trim();
-        if (val && currentCallback) currentCallback(val);
-        closeModal();
-      });
-
-      // 3) 채팅 아이템 생성 및 이벤트 바인딩
-      function createChatItem(name) {
-        const item = document.createElement("div");
-        item.className = "chat-item";
-
-        const nameSpan = document.createElement("span");
-        nameSpan.className = "chat-name";
-        nameSpan.textContent = name;
-
-        const delBtn = document.createElement("button");
-        delBtn.className = "delete-btn";
-        delBtn.textContent = "×";
-
-        item.append(nameSpan, delBtn);
-
-        item.addEventListener("click", () => selectChat(name));
-
-        // — 더블클릭: 제목 수정 모달 열기
-        item.addEventListener("dblclick", (e) => {
-          e.stopPropagation();
-          openModal(name, (newName) => {
-            nameSpan.textContent = newName;
-            if (chatHeader.textContent === name) selectChat(newName);
-            name = newName;
-          });
-        });
-
-        delBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          if (chatHeader.textContent === name) selectChat("새 채팅");
-          item.remove();
-        });
-        return item;
-      }
-
-      // 4) 채팅 선택 시 초기화 및 인사말 표시
-      function selectChat(name) {
-        chatHeader.textContent = name; // 헤더에 채팅 제목 설정
-        messages.innerHTML = ""; // 이전 메세지 모두 지우기
-
-        const botMsg = document.createElement("div"); // 빈 <div></div> 요소를 만들고
-        botMsg.className = "message bot";
-        botMsg.textContent = "안녕하세요! 무엇을 도와드릴까요?";
-        messages.appendChild(botMsg);
-      }
-
-      // 5) 메시지 전송 핸들러
-      function sendMessage() {
-        const text = userInput.value.trim();
-        if (!text) return;
-
-        // 사용자 메시지 추가
-        const um = document.createElement("div");
-        um.className = "message user";
-        um.textContent = text;
-        messages.appendChild(um);
-
-        // 봇 응답 추가
-        const bm = document.createElement("div");
-        bm.className = "message bot";
-        bm.textContent = "예시 응답입니다.";
-        messages.appendChild(bm);
-        userInput.value = "";
-        messages.scrollTop = messages.scrollHeight;
-      }
-
-      sendBtn.addEventListener("click", sendMessage);
-      userInput.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") sendMessage();
-      });
-
-      // 6) 새 채팅 버튼 → 모달 → 새 아이템 생성
-      newChatBtn.addEventListener("click", () =>
-        openModal("", (title) => {
-          const item = createChatItem(title);
-          chatList.prepend(item);
-          selectChat(title);
-        })
-      );
-
-      // 7) 초기 채팅 아이템 추가
-      chatList.append(createChatItem("챗 1"));
-    </script>
-  </body>
+</body>
 </html>
