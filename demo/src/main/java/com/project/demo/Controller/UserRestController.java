@@ -4,9 +4,11 @@ import com.project.demo.Model.User;
 import com.project.demo.Service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -17,22 +19,27 @@ public class UserRestController {
 
     // 로그인 로직
     @PostMapping("/login")
-    public ResponseEntity<Integer> login(@RequestBody User user, HttpSession session) {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody User user, HttpSession session) {
 
         String email = user.getUserEmail();
         String password = user.getUserPwd();
 
-        System.out.println(email);
-        System.out.println(password);
-
         User result = userService.login(email, password);
 
+
         // 유효성 체크
-        if (result != null){
-            session.setAttribute("user", result.getUserIdx());
-            return ResponseEntity.ok(result.getUserIdx());
+        if (result != null) {
+            session.setAttribute("userIdx", result.getUserIdx());
+            session.setAttribute("userName", result.getUserName());
+
+            // 프론트로도 응답
+            Map<String, Object> response = new HashMap<>();
+            response.put("userIdx", result.getUserIdx());
+            response.put("userName", result.getUserName());
+
+            return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.status(401).body(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
 
