@@ -26,7 +26,6 @@ public class UserRestController {
 
         User result = userService.login(email, password);
 
-
         // 유효성 체크
         if (result != null) {
             session.setAttribute("userIdx", result.getUserIdx());

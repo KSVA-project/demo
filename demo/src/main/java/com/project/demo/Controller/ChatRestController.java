@@ -39,6 +39,7 @@ public class ChatRestController {
             Map<String, Object> map = new HashMap<>();
             map.put("croomIdx", room.getCroomIdx());
             map.put("croomTitle", room.getCroomTitle());
+            map.put("createdAt", room.getCreatedAt());
             result.add(map);
         }
 

@@ -14,4 +14,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
      // user 이메일 중복체크해서 boolean 반환
      boolean existsByUserEmail(String userEmail);
+
 }

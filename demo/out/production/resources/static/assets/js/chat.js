@@ -76,6 +76,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         chatList.innerHTML = ""; // 기존 목록 초기화
 
+        // 최신 순으로 정렬
+        // sort((a, b) => b - a)는 내림차순 -> 자바스크립트에서 Date 객체를 빼면 밀리초 차이 (숫자)로 나옴
+        // ---> b - a > 0이면 → b가 더 최신 b 가 앞으로 옴
+        // sort((a, b) => a - b)는 오름차순
+        chatRooms.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
         chatRooms.forEach((room) => {
             const item = createChatItem(room.croomTitle, room.croomIdx); // 제목과 ID 전달
             chatList.appendChild(item);
@@ -92,15 +98,23 @@ document.addEventListener("DOMContentLoaded", () => {
         item.className = "chat-item";
         item.dataset.croomIdx = croomIdx; // 고유 ID 저장
 
+        // 📁 아이콘 이미지
+        const icon = document.createElement("img");
+        icon.className = "chat-icon";
+        icon.src = "assets/img/directory.png"; // 아이콘 경로 변경 가능
+        icon.alt = "폴더";
+
+        // 제목 span
         const nameSpan = document.createElement("span");
         nameSpan.className = "chat-name";
         nameSpan.textContent = title;
 
-        const delBtn = document.createElement("button");
+        // 삭제 버튼
+        const delBtn = document.createElement("span");
         delBtn.className = "delete-btn";
         delBtn.textContent = "X";
 
-        item.append(nameSpan, delBtn);
+        item.append(icon, nameSpan, delBtn);
 
         // 클릭 -> 해당 채팅방 선택
         item.addEventListener("click", () => selectChat(title, croomIdx));
@@ -142,7 +156,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const chatTitle = document.getElementById("chatTitle");
 
         chatTitle.textContent = title; // 헤더에 채팅 제목 설정
+        chatTitle.dataset.croomIdx = croomIdx; // ✅ 현재 채팅방 ID를 dataset으로 저장
         messages.innerHTML = "";  // 채팅방 비우기
+
 
         currentChatRoomIdx = croomIdx;
 
@@ -219,6 +235,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 chatTitle.textContent = roomData.croomTitle;
             }
 
+            // ... 응답 대기중 출력
+            const loadingMessage = document.createElement("div");
+            loadingMessage.className = "message bot";
+            loadingMessage.textContent = "답변 생성중 입니다.";
+            messages.appendChild(loadingMessage);
+            messages.scrollTop = messages.scrollHeight;
+
             // 2. 메시지 전송 및 저장
             const sendMsgRes = await fetch('/api/chat/message', {
                 method: 'POST',
@@ -236,14 +259,25 @@ document.addEventListener("DOMContentLoaded", () => {
             // chatBot 응답 데이터
             const resData = await sendMsgRes.json();
 
-            const botMessage = document.createElement("div");
-            botMessage.className = "message bot";
-            botMessage.textContent = resData.chat; // 응답 Chat 엔티티의 chat 필드 출력
-            messages.appendChild(botMessage);
+            // --- '답변 생성중 입니다' 제거 후 타이핑 출력 ---
+            loadingMessage.textContent = "";
 
-            setTimeout(() => {
+            const reply = resData.chat;
+            let i = 0;
+
+
+            // JavaScript가 기본으로 제공하는 타이머 함수
+            // setInterval(): 특정 함수를 일정 시간 간격으로 계속 반복해서 실행
+            // clearInterval(): 멈추고 싶을 때 사용
+
+            // typing -> setInterval()이 담겨있고, 이 함수를 멈추어라 라고 실행됨.
+            const typing = setInterval(() => {
+                loadingMessage.textContent += reply[i];
+                i++;
                 messages.scrollTop = messages.scrollHeight;
-            }, 100);
+                if (i >= reply.length) clearInterval(typing); // 다 출력하면 멈춤
+
+            }, 30); // 한 글자씩 30ms 간격 출력
 
         } catch (err) {
             console.error("메시지 전송 실패:", err);
@@ -293,18 +327,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 if (!response.ok) throw new Error("수정 실패");
 
-                // UI 업데이트
-                editingChatItem.querySelector(".chat-name").textContent = inputTitle;
+                // UI 업데이트 (바로 반영)
+                const nameEl = editingChatItem.querySelector(".chat-name");
+                nameEl.textContent = inputTitle;
 
-                if (chatHeader.textContent === editingChatItem.querySelector(".chat-name").textContent) {
-                    selectChat(inputTitle, croomIdx);
+                // 현재 선택된 채팅방이면, 헤더도 바꿔야 함
+                if (chatTitle.dataset.croomIdx == croomIdx) {
+                    chatTitle.textContent = inputTitle;
+                    chatTitle.dataset.croomIdx = croomIdx;
                 }
-
 
             } else { // 없는경우 새 채팅방 생성
                 const newRoom = await createChatRoom(inputTitle);
                 const newItem = createChatItem(newRoom.croomTitle, newRoom.croomIdx);
-                
+
                 chatList.prepend(newItem);
                 selectChat(newRoom.croomTitle, newRoom.croomIdx);
 
@@ -321,30 +357,30 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 // 모달 확인 버튼 클릭 시
-modalOk.addEventListener("click", handleModalSubmit);
+    modalOk.addEventListener("click", handleModalSubmit);
 
 // 엔터키 입력 시 (모달 input에서)
-modalInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-        e.preventDefault(); // 혹시 기본 동작 방지
-        handleModalSubmit().catch(err => console.log(err.message));
-    }
-});
-
-// 채팅방 생성 함수
-async function createChatRoom(title) {
-
-    const response = await fetch("/chat/create", {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({title})
+    modalInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault(); // 혹시 기본 동작 방지
+            handleModalSubmit().catch(err => console.log(err.message));
+        }
     });
 
-    const newRoom = await response.json();
-    currentChatRoomIdx = newRoom.croomIdx;
+// 채팅방 생성 함수
+    async function createChatRoom(title) {
 
-    return newRoom;
-}
+        const response = await fetch("/chat/create", {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({title})
+        });
+
+        const newRoom = await response.json();
+        currentChatRoomIdx = newRoom.croomIdx;
+
+        return newRoom;
+    }
 
 })
 ;
