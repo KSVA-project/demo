@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>회원가입</title>
+    <style>
+        /* 전체 페이지의 기본 스타일 설정 */
+        body {
+            font-family: Arial, sans-serif; /* 본문에 Arial 또는 sans-serif 계열 글꼴 적용 */
+            background-color: #f4f4f4; /* 배경을 연한 회색으로 설정 */
+            display: flex; /* 플렉스 박스로 레이아웃 설정 */
+            justify-content: center; /* 가로축 중앙 정렬 */
+            align-items: center; /* 세로축 중앙 정렬 */
+            height: 100vh; /* 화면 높이를 뷰포트 높이의 100%로 설정 */
+            margin: 0; /* 브라우저 기본 여백 제거 */
+        }
+
+        /* 컨텐츠를 감싸는 박스 스타일 */
+        .container {
+            background: #fff; /* 배경을 흰색으로 설정 */
+            padding: 20px 30px; /* 내부 여백: 상하 20px, 좌우 30px */
+            border-radius: 8px; /* 모서리를 8px 반경으로 둥글게 처리 */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 효과 추가 */
+            width: 300px; /* 고정 너비 300px */
+        }
+
+        /* 컨테이너 안의 제목(h2) 스타일 */
+        .container h2 {
+            text-align: center; /* 텍스트 중앙 정렬 */
+            margin-bottom: 20px; /* 아래쪽 여백 20px */
+        }
+
+        /* 폼 그룹(입력 항목 하나 묶음) 간격 설정 */
+        .form-group {
+            margin-bottom: 15px; /* 아래쪽 여백 15px */
+        }
+
+        /* 라벨(label) 스타일 */
+        .form-group label {
+            display: block; /* 블록 요소로 처리하여 줄 바꿈 */
+            margin-bottom: 5px; /* 아래쪽 여백 5px */
+        }
+
+        /* 입력(input) 요소 기본 스타일 */
+        .form-group input {
+            width: 100%; /* 부모 요소 너비 100% 차지 */
+            padding: 8px; /* 내부 여백 8px */
+            box-sizing: border-box; /* 패딩과 보더를 너비 계산에 포함 */
+            border: 1px solid #ccc; /* 연한 회색 테두리 1px */
+            border-radius: 4px; /* 테두리 모서리 4px 둥글게 */
+        }
+
+        /* 에러 메시지 스타일 */
+        .error {
+            color: red; /* 텍스트 색상을 빨간색으로 */
+            font-size: 0.9em; /* 폰트 크기를 본문 크기의 0.9배로 */
+            margin-top: 5px; /* 위쪽 여백 5px */
+            display: none; /* 기본적으로 숨김 처리 */
+        }
+
+        /* 버튼 기본 스타일 */
+        button {
+            width: 100%; /* 너비 100% */
+            padding: 10px; /* 내부 여백 10px */
+            background-color: #007bff; /* 파란색 배경 */
+            color: white; /* 흰색 텍스트 */
+            border: none; /* 테두리 없음 */
+            border-radius: 4px; /* 모서리 4px 둥글게 */
+            cursor: pointer; /* 마우스 포인터가 손가락 모양으로 */
+        }
+
+        /* 버튼에 마우스를 올렸을 때 스타일 */
+        button:hover {
+            background-color: #0056b3; /* 더 짙은 파란색 배경 */
+        }
+
+        /* 아래쪽 링크 묶음 스타일 */
+        .link {
+            text-align: center; /* 텍스트 중앙 정렬 */
+            margin-top: 10px; /* 위쪽 여백 10px */
+        }
+
+        /* 링크(a) 기본 스타일 */
+        .link a {
+            color: #007bff; /* 파란색 텍스트 */
+            text-decoration: none; /* 밑줄 제거 */
+            font-size: 0.9em; /* 폰트 크기 본문보다 작게 */
+        }
+
+        /* 링크에 마우스를 올렸을 때 스타일 */
+        .link a:hover {
+            text-decoration: underline; /* 밑줄 표시 */
+        }
+
+        #checkEmailBtn {
+            display: inline-block;
+            color: #007bff;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            white-space: nowrap;
+            text-align: right;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <h2>회원가입</h2>
+    <!-- 회원가입 제목 -->
+    <form id="signupForm">
+        <div class="form-group">
+            <label for="name">이름</label>
+            <input id="name" name="name" required type="text"/>
+        </div>
+        <div class="form-group">
+            <label for="email">이메일 </label>
+            <input id="email" name="email" required type="email"/>
+            <div class="error" id="emailError">이메일형식 으로 입력하세요</div>
+            <span id="checkEmailBtn" type="button">중복 확인</span>
+
+        </div>
+
+        <div class="form-group">
+            <label for="password">비밀번호</label>
+            <input id="password" name="password" required type="password"/>
+        </div>
+
+        <div class="form-group">
+            <label for="confirmPassword">비밀번호 확인</label>
+            <input id="confirmPassword" name="confirmPassword" required type="password"/>
+            <div class="error" id="passwordError"> 비밀번호가 일치하지 않습니다</div>
+        </div>
+
+        <button type="submit">회원가입</button>
+    </form>
+
+    <div class="link">
+        <!-- 링크 박스 생성 -->
+        <a href="/">이미 계정이 있으신가요? 로그인</a>
+        <!-- 회원가입 창에서 로그인 창으로 이동하는 링크 생성 -->
+    </div>
+</div>
+
+    <script src="assets/js/signup.js"></script>
+</body>
+</html>
