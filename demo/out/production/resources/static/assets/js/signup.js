@@ -39,9 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 emailError.style.color = "green";
                 emailError.style.display = "block";
                 isEmailChecked = true;
-                checkEmailBtn.style.backgroundColor = "#ccc";
-                checkEmailBtn.style.cursor = "default";
-                checkEmailBtn.style.pointerEvents = "none";
                 emailInput.readOnly = true;
             }
 
@@ -56,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
 
 
-// 1. 폼 서밋 이벤트 핸들러 등록
+// 1. 회원 가입 이벤트 핸들러 등록
     let submit = document.getElementById("signupForm");
 
     submit.addEventListener("submit", function (e) {
@@ -71,7 +68,12 @@ document.addEventListener("DOMContentLoaded", () => {
         // 2. 입력값 읽어오기 & 변수 세팅
         const name = document.getElementById("name").value.trim();
         const password = document.getElementById("password").value;
-        const confirmPassword = document.getElementById("confirmPassword").value;
+        const confirmPassword = document.getElementById("confirmPassword").value; // 비밀번호 확인
+
+        const location = document.getElementById("user_location").value.trim(); // 소재지
+        const employeeCount = document.getElementById("employee_count").value; // 직원수
+        const userSales = document.getElementById("user_sales").value; // 매출액
+        const userYears = document.getElementById("user_years").value // 회사 업력
 
         // 에러처리
         const passwordError = document.getElementById("passwordError");
@@ -102,6 +104,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 userName: name,
                 userEmail: emailInput.value,
                 userPwd: password,
+                userLocation: location,
+                userYears: userYears,
+                userEmployees: employeeCount,
+                userSalesRange: userSales
             }),
         })
             .then((response) => {

@@ -2,8 +2,10 @@ package com.project.demo.Service;
 
 import com.project.demo.Model.Chat;
 import com.project.demo.Model.ChatRoom;
+import com.project.demo.Model.User;
 import com.project.demo.Repository.ChatRepository;
 import com.project.demo.Repository.ChatRoomRepository;
+import com.project.demo.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
@@ -23,6 +25,7 @@ public class ChatApiService {
 
     private final ChatRepository chatRepository;
     private final ChatRoomRepository chatRoomRepository;
+    private final UserRepository userRepository;
 
     // FastAPI 보내는 URL 주소 및 요청 Template
     private final RestTemplate restTemplate = new RestTemplate();
@@ -31,11 +34,11 @@ public class ChatApiService {
     // 사용자 메시지 저장, chatBot 응답
     @Transactional
     public Map<String, Object> sendAndSave(Chat chat) {
-        // 1. 채팅방 존재 확인
-        ChatRoom chatRoom = chatRoomRepository.findById(chat.getChatRoom().getCroomIdx())
-                .orElseThrow(() -> new IllegalArgumentException("채팅방이 없습니다."));
 
-        chat.setChatRoom(chatRoom);
+        // 1. 채팅방 존재 확인 (ChatRoom 객체 필요 없음, 단순 확인용)
+        Integer croomIdx = chat.getCroomIdx();
+        chatRoomRepository.findById(croomIdx)
+                .orElseThrow(() -> new IllegalArgumentException("채팅방이 없습니다."));
 
         // 2. 사용자 메시지 저장
         if (chat.getCreatedAt() == null) {
@@ -43,12 +46,25 @@ public class ChatApiService {
         }
         chatRepository.save(chat);
 
+        // 3. 유저정보 조회!
+        Integer userIdx = Integer.parseInt(chat.getChatter());
+        User user = userRepository.findById(userIdx)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저 없음"));
+
         // 3. FastAPI 요청 데이터 구성
         Map<String, Object> request = new HashMap<>();
         request.put("message", chat.getChat());
-        request.put("croomIdx", chatRoom.getCroomIdx());
+        request.put("croomIdx", chat.getCroomIdx());
         request.put("chatter", chat.getChatter());
         request.put("createdAt", chat.getCreatedAt().toString());
+
+        Map<String, String> userMeta = new HashMap<>();
+        userMeta.put("name", user.getUserName());
+        userMeta.put("years", user.getUserYears());
+        userMeta.put("location", user.getUserLocation());
+        userMeta.put("employees", user.getUserEmployees());
+        userMeta.put("sales", user.getUserSalesRange());
+        request.put("userMeta", userMeta);
 
         System.out.println(request);
 
@@ -65,7 +81,7 @@ public class ChatApiService {
 
         // 5. 응답 메시지 저장
         Chat responseMessage = new Chat();
-        responseMessage.setChatRoom(chatRoom);
+        responseMessage.setCroomIdx(croomIdx);
         responseMessage.setChat(responseContent);
         responseMessage.setChatter("ChatBot");
         responseMessage.setRatings("5");
@@ -76,7 +92,7 @@ public class ChatApiService {
         // Map으로 변환
         Map<String, Object> result = new HashMap<>();
         result.put("chatIdx", savedResponse.getChatIdx());
-        result.put("croomIdx", savedResponse.getChatRoom().getCroomIdx());
+        result.put("croomIdx", savedResponse.getCroomIdx());
         result.put("chatter", savedResponse.getChatter());
         result.put("chat", savedResponse.getChat());
         result.put("ratings", savedResponse.getRatings());

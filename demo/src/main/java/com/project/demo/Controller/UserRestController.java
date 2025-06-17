@@ -45,7 +45,7 @@ public class UserRestController {
 
     // 회원 가입
     @PostMapping("/signup")
-    public Boolean singUp(@RequestBody User user) {
+    public Boolean signUp(@RequestBody User user) {
 
         boolean result = userService.register(user);
         return result;
@@ -54,9 +54,7 @@ public class UserRestController {
     // 이메일 유효성 체크
     @GetMapping("/check-email")
     public ResponseEntity<Boolean> checkEmail(@RequestParam String userEmail) {
-
         boolean exists = userService.isEmailExists(userEmail);
-
         return ResponseEntity.ok(exists);
     }
 

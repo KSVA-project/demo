@@ -21,10 +21,7 @@ public class ChatService {
 
     public List<Map<String, Object>> getChatsByRoomIdx(Integer croomIdx) {
 
-        ChatRoom chatRoom = chatRoomRepository.findById(croomIdx)
-                .orElseThrow(() -> new IllegalArgumentException("해당 채팅방이 존재하지 않습니다: " + croomIdx));
-
-        List<Chat> chatList = chatRepository.findByChatRoomOrderByCreatedAtAsc(chatRoom);
+        List<Chat> chatList = chatRepository.findByCroomIdxOrderByCreatedAtAsc(croomIdx);
 
         List<Map<String, Object>> result = new ArrayList<>();
 

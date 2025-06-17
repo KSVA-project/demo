@@ -24,6 +24,7 @@ repositories {
 }
 
 dependencies {
+
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -33,15 +34,9 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:3.3.2'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
-}
-
-configurations {
-    all {
-        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-security'
-        exclude group: 'org.springframework.security'
-    }
 }

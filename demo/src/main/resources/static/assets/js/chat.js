@@ -25,9 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentChatRoomIdx = null;
     let currentUserName = null;
     let currentUserIdx = null;
-
     let editingChatItem = null; // 편집중인 아이템 저장용
-
 
     // [1] 초기화 함수
     function init() {
@@ -49,14 +47,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
             const response = await fetch(`/chat/${userIdx}`);
-            if (response.ok) {
-                const chatRooms = await response.json();
+            if (!response.ok) throw new Error("응답 실패");
 
-                if (chatRooms.length === 0) {
-                    chatList.innerHTML = "<p>채팅방이 없습니다. <br>새 채팅방을 만들어주세요!</p>";
-                } else {
-                    renderChatRooms(chatRooms);
-                }
+            const chatRooms = await response.json(); // ✅ 한 번만 호출
+            if (chatRooms.length === 0) {
+                chatList.innerHTML = "<p>채팅방이 없습니다. <br>새 채팅방을 만들어주세요!</p>";
+            } else {
+                renderChatRooms(chatRooms);
             }
         } catch (error) {
             console.error("채팅방 목록 불러오기 실패", error);
@@ -139,6 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 .then(response => {
                     if (response.ok) {
                         item.remove(); // ✅ 정상 삭제
+                        loadChatRooms(); // ✅ 삭제 후 목록 새로고침
                     } else {
                         console.error("삭제 실패:", response.statusText);
                     }
@@ -180,16 +178,30 @@ document.addEventListener("DOMContentLoaded", () => {
                     msgDiv.classList.add("message");
 
                     if (msg.chatter === "ChatBot") {
-                        msgDiv.classList.add("bot");
+
+                        // 봇 메시지는 <br><br> 기준으로 문단 분리
+                        const paragraphs = msg.chat.split(/<br\s*\/?>\s*<br\s*\/?>/i);
+
+                        const botMsgContainer = document.createElement("div");
+                        botMsgContainer.classList.add("message", "bot");
+
+                        paragraphs.forEach(p => {
+                            const para = document.createElement("p");
+                            para.style.margin = "12px 0";
+                            para.innerHTML = p.trim().replace(/ /g, "&nbsp;");
+                            botMsgContainer.appendChild(para);
+                        });
+
+                        messages.appendChild(botMsgContainer);
+
                     } else {
-                        msgDiv.classList.add("user");
+                        // 유저 메시지는 그대로 출력
+                        const msgDiv = document.createElement("div");
+                        msgDiv.classList.add("message", "user");
+                        msgDiv.textContent = msg.chat;
+                        messages.appendChild(msgDiv);
                     }
-
-                    msgDiv.textContent = msg.chat;
-                    messages.appendChild(msgDiv);
                 })
-
-
             } catch (err) {
                 console.log("채팅 메시지 로드 오류:", err);
             }
@@ -227,12 +239,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 const roomData = await createRoomRes.json();
                 currentChatRoomIdx = roomData.croomIdx;
 
-                // 새로 만든 채팅방 UI에 추가
-                const newItem = createChatItem(roomData.croomTitle, roomData.croomIdx);
-                chatList.prepend(newItem);
+                // ✅ 전체 채팅방 목록을 새로 불러와 다시 렌더링
+                await loadChatRooms();
 
-                // UI도 해당 채팅방이름만 전환
-                chatTitle.textContent = roomData.croomTitle;
             }
 
             // ... 응답 대기중 출력
@@ -247,8 +256,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
-                    chatRoom: {croomIdx: currentChatRoomIdx},
-                    chatter: currentUserName,
+                    croomIdx: currentChatRoomIdx,
+                    chatter: currentUserIdx,
                     chat: text
                 })
             });
@@ -262,22 +271,54 @@ document.addEventListener("DOMContentLoaded", () => {
             // --- '답변 생성중 입니다' 제거 후 타이핑 출력 ---
             loadingMessage.textContent = "";
 
-            const reply = resData.chat;
-            let i = 0;
+            const rawReply = resData.chat;
 
+            // 1. <br><br>을 기준으로 문단 나눔
+            const paragraphs = rawReply.split(/<br\s*\/?>\s*<br\s*\/?>/i);
 
-            // JavaScript가 기본으로 제공하는 타이머 함수
-            // setInterval(): 특정 함수를 일정 시간 간격으로 계속 반복해서 실행
-            // clearInterval(): 멈추고 싶을 때 사용
+            let paraIndex = 0;
+            let charIndex = 0;
+            let currentParagraph = null;
 
-            // typing -> setInterval()이 담겨있고, 이 함수를 멈추어라 라고 실행됨.
-            const typing = setInterval(() => {
-                loadingMessage.textContent += reply[i];
-                i++;
-                messages.scrollTop = messages.scrollHeight;
-                if (i >= reply.length) clearInterval(typing); // 다 출력하면 멈춤
+            function typeNextChar() {
+                if (paraIndex >= paragraphs.length) return;
 
-            }, 30); // 한 글자씩 30ms 간격 출력
+                const paragraphHtml = paragraphs[paraIndex];
+
+                if (charIndex === 0) {
+                    currentParagraph = document.createElement("p");
+                    currentParagraph.innerHTML = "";  // 초기화
+                    currentParagraph.style.margin = "12px 0";
+                    loadingMessage.appendChild(currentParagraph);
+                }
+
+// br 태그 감지 후 처리
+                if (paragraphHtml.slice(charIndex).startsWith("<br>")) {
+                    currentParagraph.appendChild(document.createElement("br"));
+                    charIndex += 4; // "<br>" 길이
+                    setTimeout(typeNextChar, 20);
+                } else if (paragraphHtml.slice(charIndex).startsWith("<br/>")) {
+                    currentParagraph.appendChild(document.createElement("br"));
+                    charIndex += 5; // "<br/>" 길이
+                    setTimeout(typeNextChar, 20);
+                } else {
+                    // 일반 문자 출력
+                    const char = paragraphHtml[charIndex];
+                    currentParagraph.innerHTML += char === " " ? "&nbsp;" : char;
+                    charIndex++;
+                    messages.scrollTop = messages.scrollHeight;
+                    setTimeout(typeNextChar, 20);
+                }
+
+                // 문단 끝나면 다음으로
+                if (charIndex >= paragraphHtml.length) {
+                    charIndex = 0;
+                    paraIndex++;
+                    setTimeout(typeNextChar, 300);
+                }
+            }
+
+            typeNextChar();
 
         } catch (err) {
             console.error("메시지 전송 실패:", err);
@@ -338,12 +379,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
             } else { // 없는경우 새 채팅방 생성
+
                 const newRoom = await createChatRoom(inputTitle);
+
+                // 기존 목록은 유지하면서 새 채팅방만 위에 추가
                 const newItem = createChatItem(newRoom.croomTitle, newRoom.croomIdx);
-
                 chatList.prepend(newItem);
-                selectChat(newRoom.croomTitle, newRoom.croomIdx);
-
 
             }
 

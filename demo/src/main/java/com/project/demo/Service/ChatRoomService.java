@@ -16,15 +16,11 @@ import java.util.List;
 public class ChatRoomService {
 
     private final ChatRoomRepository chatRoomRepository;
-    private final UserRepository userRepository;
 
     // 채팅 목록 불러오기
-    public List<ChatRoom> getChatRoomsByEmail(int userIdx) {
-
-        User user = userRepository.findById(userIdx).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다:" + userIdx));
-        return chatRoomRepository.findByUser(user);
+    public List<ChatRoom> getChatRoomsByUserIdx(int userIdx) {
+        return chatRoomRepository.findByUserIdx(userIdx);
     }
-
 
     // 채팅방 만들기
     public ChatRoom createChatRoom(String title, Integer userIdx) {
@@ -32,19 +28,16 @@ public class ChatRoomService {
         // 실제 DB에는 USER_IDX라는 외래키 컬럼으로 저장됨.
         // 연관된 Entitiy 객체를 넣어줘야 외래키가 자동으로 관리되고, 저장되어야 함.
 
-        User user = userRepository.findById(userIdx)
-                .orElseThrow(() -> new IllegalArgumentException("유저가 없습니다. userIdx=" + userIdx));
-
         ChatRoom chatRoom = new ChatRoom();
         chatRoom.setCroomTitle(title);
-        chatRoom.setUser(user);
+        chatRoom.setUserIdx(userIdx);
         chatRoom.setCreatedAt(LocalDateTime.now());
 
         return chatRoomRepository.save(chatRoom);
     }
 
     // 채팅방 삭제로직
-    public void deleteChatRoom(int croomIdx) {
+    public void deleteChatRoom(Integer croomIdx) {
         chatRoomRepository.deleteById(croomIdx);
     }
 
@@ -52,8 +45,11 @@ public class ChatRoomService {
     @Transactional
     public void updateTitle(int croomIdx, String newTitle) {
         
-        ChatRoom chatRoom = chatRoomRepository.findById(croomIdx)
+        // 존재 여부만 확인
+        chatRoomRepository.findById(croomIdx)
                 .orElseThrow(() -> new IllegalArgumentException("채팅방이 존재하지 않음 id=" + croomIdx));
+
+        // 제목 업데이트
         chatRoomRepository.updateTitle(croomIdx, newTitle);
     }
 }

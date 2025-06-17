@@ -11,11 +11,11 @@ import java.util.List;
 
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, Integer> {
 
-     List<ChatRoom> findByUser(User user);
+     List<ChatRoom> findByUserIdx(Integer userIdx);
 
      // JPQL (Java Persistence Query Language)
      @Modifying  //update/delete 쿼리를 실행할 때 필요
-     @Query(value = "UPDATE TB_CHATROOM SET CROOM_TITLE = :title WHERE CROOM_IDX = :id", nativeQuery = true)
+     @Query(value = "UPDATE tb_chatroom SET croom_title = :title WHERE croom_idx = :id", nativeQuery = true)
      void updateTitle(@Param("id") Integer croomIdx, @Param("title") String newTitle);
 
      // @Param : JPQL이나 네이티브 쿼리에서 사용하는 파라미터 이름을 명시적으로 지정해 주는 역할

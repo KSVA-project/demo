@@ -8,31 +8,40 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "TB_USER")
+@Table(name = "tb_user")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 public class User {
 
-    @Id // PRIMARY KEY
+     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "USER_IDX")
+    @Column(name = "user_idx")
     private Integer userIdx;
 
-    @Column(name = "USER_EMAIL", nullable = false, length = 50)
+    @Column(name = "user_email", nullable = false, length = 50)
     private String userEmail;
 
-    @Column(name = "USER_PWD", nullable = false, length = 50)
+    @Column(name = "user_pwd", nullable = false, length = 50)
     private String userPwd;
 
-    @Column(name = "USER_NAME", nullable = false, length = 200)
-    private String userName;
+    @Column(name = "user_name", nullable = false, length = 200)
+    private String userName; // 기업명
 
-    @Column(name = "CREATED_AT", nullable = false, updatable = false)
+    @Column(name = "user_years", length = 10)
+    private String userYears; // 업력
+
+    @Column(name = "user_location", length = 50)
+    private String userLocation; // 소재지 (예: 서울, 인천)
+
+    @Column(name = "user_employees", length = 30)
+    private String userEmployees; // 직원 수
+
+    @Column(name = "user_sales_range", length = 30)
+    private String userSalesRange; // 연매출 범위 문자열 (예: "5~10억")
+
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<ChatRoom> chatRooms;
 
 }

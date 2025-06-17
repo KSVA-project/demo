@@ -41,7 +41,7 @@
 </td>
 <td>
 <div class="infoBox" id="duration">
-<div class="counter">0.381s</div>
+<div class="counter">0.402s</div>
 <p>duration</p>
 </div>
 </td>
@@ -79,7 +79,7 @@
 </thead>
 <tr>
 <td class="success">contextLoads()</td>
-<td class="success">0.381s</td>
+<td class="success">0.402s</td>
 <td class="success">passed</td>
 </tr>
 </table>
@@ -87,8 +87,8 @@
 <div class="tab">
 <h2>Standard output</h2>
 <span class="code">
-<pre>20:03:18.105 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.project.demo.DemoApplicationTests]: DemoApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-20:03:18.293 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.project.demo.DemoApplication for test class com.project.demo.DemoApplicationTests
+<pre>21:21:18.172 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.project.demo.DemoApplicationTests]: DemoApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+21:21:18.332 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.project.demo.DemoApplication for test class com.project.demo.DemoApplicationTests
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -99,30 +99,31 @@
 
  :: Spring Boot ::                (v3.5.0)
 
-2025-06-13T20:03:18.913+09:00  INFO 3856 --- [demo] [    Test worker] com.project.demo.DemoApplicationTests    : Starting DemoApplicationTests using Java 17.0.15 with PID 3856 (started by USER in C:\Users\USER\git\ragProject\demo)
-2025-06-13T20:03:18.915+09:00  INFO 3856 --- [demo] [    Test worker] com.project.demo.DemoApplicationTests    : No active profile set, falling back to 1 default profile: &quot;default&quot;
-2025-06-13T20:03:19.896+09:00  INFO 3856 --- [demo] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2025-06-13T20:03:20.022+09:00  INFO 3856 --- [demo] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 109 ms. Found 3 JPA repository interfaces.
-2025-06-13T20:03:20.606+09:00  INFO 3856 --- [demo] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2025-06-13T20:03:21.016+09:00  INFO 3856 --- [demo] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@350ff014
-2025-06-13T20:03:21.019+09:00  INFO 3856 --- [demo] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2025-06-13T20:03:21.070+09:00  INFO 3856 --- [demo] [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2025-06-13T20:03:21.120+09:00  INFO 3856 --- [demo] [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.15.Final
-2025-06-13T20:03:21.176+09:00  INFO 3856 --- [demo] [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2025-06-13T20:03:21.615+09:00  INFO 3856 --- [demo] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2025-06-13T20:03:21.750+09:00  INFO 3856 --- [demo] [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+2025-06-14T21:21:18.974+09:00  INFO 13848 --- [demo] [    Test worker] com.project.demo.DemoApplicationTests    : Starting DemoApplicationTests using Java 17.0.15 with PID 13848 (started by USER in C:\Users\USER\git\ragProject\demo)
+2025-06-14T21:21:18.978+09:00  INFO 13848 --- [demo] [    Test worker] com.project.demo.DemoApplicationTests    : The following 1 profile is active: &quot;live&quot;
+2025-06-14T21:21:19.951+09:00  INFO 13848 --- [demo] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-14T21:21:20.046+09:00  INFO 13848 --- [demo] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 80 ms. Found 3 JPA repository interfaces.
+2025-06-14T21:21:20.505+09:00  INFO 13848 --- [demo] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-06-14T21:21:20.672+09:00  INFO 13848 --- [demo] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.mariadb.jdbc.Connection@411fa0ce
+2025-06-14T21:21:20.674+09:00  INFO 13848 --- [demo] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-06-14T21:21:20.719+09:00  INFO 13848 --- [demo] [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-14T21:21:20.771+09:00  INFO 13848 --- [demo] [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.15.Final
+2025-06-14T21:21:20.815+09:00  INFO 13848 --- [demo] [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-06-14T21:21:21.302+09:00  INFO 13848 --- [demo] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-14T21:21:21.401+09:00  WARN 13848 --- [demo] [    Test worker] org.hibernate.dialect.Dialect            : HHH000511: The 10.3.39 version for [org.hibernate.dialect.MariaDBDialect] is no longer supported, hence certain features may not work properly. The minimum supported version is 10.4.0. Check the community dialects project for available legacy versions.
+2025-06-14T21:21:21.427+09:00  INFO 13848 --- [demo] [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
 	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
 	Database driver: undefined/unknown
-	Database version: 8.0.40
+	Database version: 10.3.39
 	Autocommit mode: undefined/unknown
 	Isolation level: undefined/unknown
 	Minimum pool size: undefined/unknown
 	Maximum pool size: undefined/unknown
-2025-06-13T20:03:22.802+09:00  INFO 3856 --- [demo] [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2025-06-13T20:03:22.805+09:00  INFO 3856 --- [demo] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2025-06-13T20:03:23.303+09:00  INFO 3856 --- [demo] [    Test worker] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
-2025-06-13T20:03:23.740+09:00  WARN 3856 --- [demo] [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2025-06-13T20:03:24.413+09:00  INFO 3856 --- [demo] [    Test worker] com.project.demo.DemoApplicationTests    : Started DemoApplicationTests in 5.847 seconds (process running for 7.482)
+2025-06-14T21:21:22.339+09:00  INFO 13848 --- [demo] [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-14T21:21:22.342+09:00  INFO 13848 --- [demo] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-14T21:21:22.819+09:00  INFO 13848 --- [demo] [    Test worker] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-14T21:21:23.201+09:00  WARN 13848 --- [demo] [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-14T21:21:23.888+09:00  INFO 13848 --- [demo] [    Test worker] com.project.demo.DemoApplicationTests    : Started DemoApplicationTests in 5.34 seconds (process running for 6.801)
 </pre>
 </span>
 </div>
@@ -134,7 +135,7 @@
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="https://www.gradle.org">Gradle 8.14</a> at 2025. 6. 13. 오후 8:03:24</p>
+<a href="https://www.gradle.org">Gradle 8.14</a> at 2025. 6. 14. 오후 9:21:24</p>
 </div>
 </div>
 </body>

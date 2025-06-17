@@ -30,7 +30,7 @@ public class ChatRestController {
     @GetMapping("/{userIdx}")
     public ResponseEntity<List<Map<String, Object>>> getChatRooms(@PathVariable int userIdx) {
 
-        List<ChatRoom> chatRooms = chatRoomService.getChatRoomsByEmail(userIdx);
+        List<ChatRoom> chatRooms = chatRoomService.getChatRoomsByUserIdx(userIdx);
 
         // Map 리스트로 변환
         List<Map<String, Object>> result = new ArrayList<>();
