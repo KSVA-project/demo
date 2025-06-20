@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>BizQ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+            "Noto Sans KR", sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .wrapper {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .sidebar {
+            width: 300px;
+            min-width: 280px;
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            border-right: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .team-name {
+            padding: 25px 20px;
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            background: linear-gradient(45deg, #3498db, #2ecc71);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        #newChatBtn {
+            margin: 20px;
+            padding: 12px 20px;
+            background: linear-gradient(45deg, #3498db, #2ecc71);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        #newChatBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.6);
+        }
+
+        .chat-list {
+            flex: 1;
+            padding: 0 20px;
+            overflow-y: auto;
+        }
+
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: white;
+        }
+
+        .chat-header {
+            padding: 20px 30px;
+            background: 'linear-gradient(180deg, #2c3e50 0%, #34495e 100%)',
+            color: #667eea !important;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #chatTitle {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .logout-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            font-weight: 700;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .messages {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message {
+            display: inline-block;
+            max-width: 80%;
+            word-wrap: break-word;
+            padding: 10px 15px;
+            border-radius: 18px;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        /* 봇 메시지 */
+        .message.bot {
+            align-self: flex-start;
+            background: #ffffff !important;
+            color: rgba(0, 0, 0, 0.98) !important;
+            padding: 10px 15px !important;
+            border-radius: 18px !important;
+        }
+
+        /* 사용자 메시지 */
+        .message.user {
+            align-self: flex-end;
+            background: #f3f4f6 !important;
+            color: rgba(0, 0, 0, 0.85) !important;
+        }
+
+        .input-area {
+            padding: 25px 30px;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 15px;
+            align-items: flex-end;
+        }
+
+        #userInput {
+            /* 가로 비율도 더 키우고 싶으면 flex 값을 조정하세요 */
+            flex: 2;
+
+            /* 위·아래 40px, 좌·우 20px 패딩 */
+            padding: 25px 30px;
+
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 16px;
+            line-height: 20px;
+            resize: none;
+            overflow-y: hidden;
+
+            /* 최소 높이 = 20px + (40px * 2) = 100px */
+            min-height: 100px;
+            /* 최대 높이 = (20px * 4) + (40px * 2) = 160px */
+            max-height: 160px;
+
+            background: #f8f9fa;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+
+        #userInput:focus {
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            outline: none;
+        }
+
+        /* 4줄 초과시 스크롤바 표시 */
+        #userInput.scrollable {
+            overflow-y: auto;
+        }
+
+        #sendBtn {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, #3498db, #2ecc71);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            flex-shrink: 0;
+        }
+
+        #sendBtn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        #sendBtn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .send-icon {
+            width: 20px;
+            height: 20px;
+            filter: brightness(0) invert(1);
+        }
+
+        .chat-icon {
+            width: 18px;
+            height: 18px;
+            object-fit: contain;
+            display: inline-block;
+        }
+
+        /* 채팅 아이템 스타일 */
+        .chat-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-bottom: 6px;
+        }
+
+        .chat-item .chat-name {
+            color: #fff;
+        }
+
+        .delete-btn {
+            margin-left: auto;
+            font-size: 12px;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.2s ease, color 0.2s;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .delete-btn:hover {
+            color: #ff6b6b;
+        }
+
+        .chat-item:hover .delete-btn {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .chat-item:hover {
+            background: rgba(24, 42, 68, 1) !important;
+        }
+
+        /* 모달 스타일 */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: #fff;
+            border-radius: 20px;
+            padding: 24px 32px;
+            max-width: 480px;
+            width: 90%;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            animation: modalSlideIn 0.25s ease-out;
+        }
+
+        .modal label {
+            display: block;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #1f2937;
+        }
+
+        #modalInput {
+            width: 100%;
+            height: 48px;
+            padding: 0 12px;
+            border: 2px solid #6366f1;
+            border-radius: 12px;
+            font-size: 1rem;
+            outline: none;
+            box-sizing: border-box;
+            transition: border-color 0.2s ease;
+        }
+
+        #modalInput:focus {
+            border-color: #4f46e5;
+            box-shadow: none;
+        }
+
+        .modal .buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .btn-cancel {
+            background: #f3f4f6;
+            color: #374151;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+
+        .btn-cancel:hover {
+            background: #e5e7eb;
+        }
+
+        .btn-ok {
+            background: #6366f1;
+            color: #fff;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .btn-ok:hover {
+            background: #4f46e5;
+        }
+
+        /* 애니메이션 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        /* 스크롤바 스타일링 */
+        #userInput::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #userInput::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        #userInput::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+
+        #userInput::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+
+    </style>
+</head>
+<body>
+<div class="wrapper">
+
+    <div class="sidebar">
+        <h2 class="team-name">BizQ</h2>
+        <button id="newChatBtn">새채팅</button>
+        <div class="chat-list" id="chatList"></div>
+    </div>
+
+    <div class="chat-area">
+        <div class="chat-header" id="chatHeader">
+            <span id="chatTitle">새 채팅</span>
+            <p class="logout-btn" id="logoutBtn">My page</p>
+        </div>
+
+
+        <div class="messages" id="messages">
+            <div class="message bot">안녕하세요! 무엇을 도와드릴까요?</div>
+        </div>
+
+        <div class="input-area">
+            <textarea id="userInput" placeholder="지원사업에 대해 궁금한 것을 물어보세요" rows="1"></textarea>
+            <button id="sendBtn">
+                <img alt="전송" class="send-icon" src="assets/img/submit_icon.png"/>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!--모달 창-->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+        <label for="modalInput">채팅 제목을 입력하세요</label>
+        <input id="modalInput" type="text"/>
+        <div class="buttons">
+            <button class="btn-cancel" id="modalCancel">취소</button>
+            <button class="btn-ok" id="modalOk">확인</button>
+        </div>
+    </div>
+</div>
+
+<script src="assets/js/main.js"></script>
+<script src="assets/js/chat.js"></script>
+
+</body>
+</html>

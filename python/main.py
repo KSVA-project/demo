@@ -1,25 +1,44 @@
+# MMR Retriever 적용
+# 임베딩 모델 : OpenAIEmbeddings
+
+# ✅ FastAPI 관련
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
-import asyncio
-from langchain_community.chat_models import ChatOpenAI
-from langchain_core.prompts import PromptTemplate
-from langchain_core.runnables import RunnablePassthrough
-from langchain_core.output_parsers import StrOutputParser
-from langchain_core.runnables import RunnableLambda
-from langchain_chroma import Chroma
-from langchain_community.embeddings.huggingface import HuggingFaceEmbeddings
-from pydantic import BaseModel, Field
-from datetime import datetime
-import logging
 from fastapi.middleware.cors import CORSMiddleware
-from contextlib import asynccontextmanager 
-from typing import Dict, Optional
-import os
-from dotenv import load_dotenv
+from pydantic import BaseModel, Field
+from contextlib import asynccontextmanager
 import uvicorn
 
-load_dotenv()
+# ✅ LangChain - 핵심 체인 구성 요소
+from langchain_core.prompts import PromptTemplate
+from langchain_core.runnables import RunnablePassthrough, RunnableLambda
+from langchain_core.output_parsers import StrOutputParser
 
+# ✅ LangChain - 모델 및 벡터스토어
+from langchain_community.chat_models import ChatOpenAI
+from langchain_chroma import Chroma
+from langchain_huggingface import HuggingFaceEmbeddings
+
+# ✅ Python 기본 라이브러리
+from datetime import datetime
+from typing import Dict, Optional
+import asyncio
+import logging
+import os
+import json
+
+# ✅ APScheduler 추가
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from apscheduler.triggers.cron import CronTrigger
+
+# ✅ 크롤링 및 벡터 DB 저장 - 작업 스케줄링
+from crawling import run_crawling
+from service import run_service
+
+# ✅ 환경 변수 로드
+from dotenv import load_dotenv
+
+load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
 
 # 로깅 설정
@@ -38,19 +57,41 @@ class ChatRequest(BaseModel):
     createdAt: datetime = Field(default_factory=datetime.now)
     userMeta: Dict[str, Optional[str]] # 사용자 메타데이터 필드
 
+
+def scheduled_job():
+    logger.info("🕒 APScheduler: run_crawling + run_service 실행 시작")
+    try:
+        run_crawling()
+        run_service()
+        logger.info("✅ APScheduler: 작업 완료")
+    except Exception as e:
+        logger.error(f"❌ APScheduler: 작업 실패 - {e}")
+
 # 🌱 lifespan으로 초기화 로직 구현
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     global chain
     logger.info("🚀 FastAPI 서버 시작 - LangChain 초기화 중...")
+    
     try:
         chain = create_chain()
         logger.info("✅ LangChain 초기화 완료!")
         logger.info(f"✅ 현재 체인 타입: {type(chain)}")
         logger.info(f"✅ 체인 구성: {chain}")
+        
     except Exception as e:
         logger.error(f"❌ LangChain 초기화 실패: {e}")
         chain = None
+    
+    # ✅ APScheduler 작업 시작
+    scheduler = AsyncIOScheduler()
+    scheduler.add_job(
+        scheduled_job, 
+        CronTrigger(hour=20, minute=20, timezone="Asia/Seoul")
+    )
+    scheduler.start()
+    logger.info("🔄 APScheduler 시작 - 매일 20:20 실행")
+    
     yield
     logger.info("🛑 FastAPI 서버 종료...")
 
@@ -94,8 +135,8 @@ async def chat(request: ChatRequest):
         
         logger.info(f"🔎 response type: {type(response)}", extra={"flush": True})
         logger.info(f"🔎 response raw: {response}", extra={"flush": True})
-
-        # Check if 'metadata' exists in the response 
+        
+        # 반환 형태가 복잡한 체인일수록 dict로 응답
         # [줄바꿈 가공]
         if isinstance(response, str):
             formatted_response = response.replace("\n\n", "<br><br>").replace("\n", "<br>")
@@ -123,7 +164,7 @@ def create_chain():
         # Initialize embeddings model
         embeddings_model = HuggingFaceEmbeddings(
             model_name='jhgan/ko-sroberta-nli',
-            model_kwargs={'device': 'cpu'},
+            model_kwargs={'device': 'cpu'},  # GPU 사용 시 'cuda'로 변경
             encode_kwargs={'normalize_embeddings': True},
         )
         logger.info("✅ Embeddings model initialized.")
@@ -133,17 +174,25 @@ def create_chain():
         vectorstore = Chroma(
             persist_directory="./chroma_db",  # 디스크 기반 저장소 사용
             embedding_function=embeddings_model,
-            collection_metadata={"hnsw:space": "cosine"},
+            collection_metadata={
+            "hnsw:space": "cosine",             # 자연어 유사도 측정에 가장 적합
+            "hnsw:construction_ef": 400,        # 인덱스 품질 ↑ (기본 200 → 400)
+            "hnsw:M": 32,                       # 연결 수 증가 → 검색 품질 향상 (기본 16)
+            "hnsw:search_ef": 128,              # 검색 시 정확도 증가 (기본 10~100)
+            "hnsw:num_threads": 4,              # 멀티스레드 인덱싱 (CPU 성능에 맞게 조절)
+            "hnsw:batch_size": 64               # 벡터 삽입 속도 향상 (대용량 처리 시)
+            }
         )
+        
         logger.info("✅ ChromaDB loaded successfully.")
 
         # MMR Retriever 적용
         retriever = vectorstore.as_retriever(
             search_type="mmr",              # MMR 기반 유사도 검색
             search_kwargs={
-                "k": 10,                    # 전체 후보 문서 수
-                "fetch_k": 30,              # 더 많은 후보 중 다양성 고려해 k개 선택
-                "lambda_mult": 0.7          # 유사도 vs 다양성 균형 (1.0: 유사도만, 0.0: 다양성만)
+                "k": 8,                    # 전체 후보 문서 수
+                "fetch_k": 20,              # 더 많은 후보 중 다양성 고려해 k개 선택
+                "lambda_mult": 0.3          # 유사도 70%, 다양성 30% 반영 (1.0: 유사도만, 0.0: 다양성만)
             }
         )
 
@@ -151,8 +200,17 @@ def create_chain():
         prompt = PromptTemplate.from_template(
             """
             You are an AI assistant that recommends suitable government support programs for companies.
-            Use the retrieved documents and the following company information to filter and suggest the most relevant support programs.
+
+            You must perform two tasks:
+            1. Recommend the most relevant support programs for the company based on the retrieved documents and the provided company profile.
+            2. Summarize the key details of the selected support programs in a clear and concise manner.
+
+            The metadata included in each document (such as program name, field, region, contact information, url, cost etc.) is critical.
+            Please analyze and utilize it to generate more accurate recommendations and summaries.
+
             If none of the programs match the company's profile, say you couldn't find a suitable one.
+            **However, if any relevant programs are recommended, do not include such a message.**
+
 
             [Company Information]
             - Company Name: {user_name}
@@ -175,7 +233,7 @@ def create_chain():
             openai_api_key=api_key,
             temperature=0.1,
             model_name="gpt-3.5-turbo",
-            request_timeout=10
+            request_timeout=20,
         )
 
         logger.info("✅ LangChain components initialized.")
@@ -192,7 +250,10 @@ def create_chain():
             {
                 "context": RunnableLambda(lambda x: x["question"]) 
                 | retriever 
-                | RunnableLambda(lambda docs: "\n\n".join([doc.page_content for doc in docs])),
+                | RunnableLambda(lambda docs: "\n\n".join([
+                    f"[📄 Metadata]\n{json.dumps({k: v for k, v in doc.metadata.items() if k!='file_hash'}, ensure_ascii=False, indent=2)}\n📑 Content:\n{doc.page_content}"
+                    for doc in docs
+                ])),
                 "question": RunnablePassthrough(),
                 "user_name": RunnablePassthrough(),
                 "user_years": RunnablePassthrough(),
@@ -204,6 +265,10 @@ def create_chain():
             | llm
             | StrOutputParser()
         )
+
+        # RunnableLambda는 **MMR retriever가 반환한 문서들(List[Document])**
+        # json.dumps(..., ensure_ascii=False, indent=2) : meta를 json 문자열로 반환
+        # indent=2는 보기 좋게 들여쓰기
 
         logger.info("🚀 LangChain RAG chain created successfully.")
 

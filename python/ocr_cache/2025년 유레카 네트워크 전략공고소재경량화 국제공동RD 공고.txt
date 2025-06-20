@@ -1,0 +1,1086 @@
+Σeureka
+innovation beyond borders
+Announcement of the
+Multilateral Eureka Lightweighting Call 2025
+for R&D Projects between
+Austria, Belgium (Flanders & Wallonia), Chile,
+France, Germany, Lithuania, Poland, Portugal, Slovakia,
+South Korea, Spain, Türkiye and Ukraine
+v1.1 (Details may change)
+Announcement of the call
+Time schedule
+Opening of the call
+Deadline for Eureka application (SmartSimple)
+Eureka label and funding decision¹
+Project start¹
+1-2 April 2025 during
+Global Innovation Summit 2025
+15 May 2025
+23 October 2025 17:00 CEST
+From December 2025 to March 2026
+From February 2026 to June 2026
+1 Funding decisions for projects with South Korea will be communicated after March 2026
+and projects can start from July 2026Transnational Eureka Lightweighting Call
+FROM 15 MAY 2025 TO 23 OCTOBER 2025 17:00 CEST
+Eureka is the world's biggest public network for international cooperation in R&D and
+innovation, present in over 45 countries. It is a decentralised intergovernmental organisation
+aiming to boost the productivity and competitiveness of industries by funding and supporting
+international collaborative market-driven R&D projects.
+This call for projects is launched following Eureka's Network projects framework based on
+mutual consent between participating national and regional funding bodies.
+The national funding bodies (NFB) from Austria, Belgium (Flanders & Wallonia), Chile, France,
+Germany, Lithuania, Poland, Portugal, Slovakia, South Korea, Spain, Türkiye and Ukraine have
+allocated funding for organisations collaborating on international R&D projects in the field of
+Lightweighting.
+You can submit your R&D project application concerning Lightweighting for this call for projects
+between 15 May 2024 and 23 October 2025 17:00 CEST. Your project consortium must include
+organisations based in a minimum of two of the countries/regions listed in this call.
+Eureka programme: Network projects
+Participating countries/regions
+Austria, Belgium (Flanders & Wallonia), Chile, France, Germany, Lithuania, Poland,
+Portugal, Slovakia, South Korea, Spain, Türkiye and Ukraine
+Scope
+This project call is for R&D projects within Lightweighting technologies.
+Lightweighting technology is a key enabling technology to reduce weight, save materials, and
+improve functionality while maintaining or enhancing performance. Smart lightweight design,
+advanced materials, and optimised manufacturing processes are crucial parameters. Digital
+solutions for calculation models, production processes, and performance evaluation are
+essential tools for driving innovation in lightweighting. Lightweighting technology provides
+environmentally friendly solutions while simultaneously adding commercial value across
+multiple industries.
+Effects targeted by lightweighting technologies include:
+A. Optimisation of resource and energy efficiency
+Smart lightweight design helps to reduce material and energy consumption during the
+manufacturing and use phase of new materials and products. Increasing the duration of
+use and lifespan of lightweight materials and products by wear reduction, slowing down
+the aging process, and improving material fatigue contributes to resource and energy
+efficiency. Structural health monitoring of existing and new components indicates when
+repair or replacement is necessary, further contributing to resource efficiency. The use
+of simulations, virtual models (digital twin), intelligent process control (machine
+learning), and automation allows predictive manufacturing, reductions in time-to-
+1market, processing times, and material waste from substandard products, significantly
+reducing environmental impact and CO2 emissions.
+B. Maximising efficiency and performance
+Lightweighting enables not only weight reduction but also optimised material use and
+structural principles for maximum efficiency and performance. The challenge is to
+develop and implement advanced lightweighting technologies that enable load-
+optimised material usage while maintaining or improving functionality. This requires
+integrating digital solutions such as simulations, virtual models (digital twins), and
+intelligent process control to enhance flexibility and adaptability in lightweight design.
+Modern manufacturing methods, including additive manufacturing, open new
+possibilities for application-specific production. To fully unlock the potential of
+lightweighting, innovative approaches in material selection, shaping, and production
+must be explored to create economic value.
+C. Bolstering lightweight advancements in mobility and integration in more areas
+The mobility sector remains a core focus for lightweighting advancements due to its
+high potential for efficiency gains and environmental impact reduction. Further
+improvements in lightweight materials, structures, and manufacturing techniques are
+essential for achieving enhanced fuel efficiency and sustainability in automotive,
+aerospace, railway, and maritime applications. At the same time, expanding lightweight
+solutions beyond mobility to other sectors can unlock additional benefits.
+Standardisation of new lightweight materials, technologies, measuring and testing
+methods, the development of digital twins, interconnected production processes, and
+accessible databases on lightweight materials encourage the transfer and development
+of new lightweight technologies across industries.
+Relevant industry sectors include (but are not limited to):
+Regardless of national priorities, all sectors with a need for lightweighting technologies are
+welcome, including but not limited to automotive, railway, aerospace, space, maritime,
+mechanical engineering, energy, construction, infrastructure, health, farming, and forestry, etc.
+Call-relevant lightweighting technologies to be researched and developed include (but are not
+limited to):
+1. Optimisation of lightweight design approaches
+Topology optimisation considering load paths and lightweight design
+Advanced simulation approaches
+Hybrid lightweight construction
+Functional integration
+Smart/intelligent components
+Condition monitoring
+2. Novel lightweight materials including optimised manufacturing
+Advanced material research for enhanced lightweight performance
+Hard coatings and technologies enabling a lifetime expansion
+Process automation
+Simulations and virtual models (digital twin)
+2Intelligent process control (machine learning)
+Standardisation of new lightweight materials and technologies
+Standardisation of measuring and testing methods
+Development of accessible databases on lightweight materials
+3. Recycling of lightweight materials
+Increasing the use of secondary materials
+Technologies for disjoining
+Technologies for traceability of chemical compositions
+4. Joining technology
+.
+Smart adhesives
+Pre-treatment of surfaces
+New joining technologies
+Development of new welding consumables and solders for special metal mixing
+combinations
+Development of joining processes for high-strength and low-ductile lightweight
+materials or mixed connections made of metal-plastic fibre composites
+5. Additive manufacturing
+.
+Multi-material solutions optimised for lightweight applications
+Development of in-situ quality measurement methods
+•
+Optimisation of build-job planning for high productivity
+.
+Reducing required support structures for overhangs
+Manufacturing of thin structures
+Manufacturing of structural parts
+Optimising processes for manufacturing large components
+Development of standardised processing language for different additive
+manufacturing machines
+Quality assurance through sensing, data acquisition, processing, and machine
+learning
+6. Digitalisation
+.
+•
+Simulations and virtual models for lightweight products/technologies (digital twin)
+Intelligent process control (machine learning)
+Development of standardised processing language for different manufacturing
+machines
+Coordination with European activities regarding Industry 4.0 (Gaia-X, Catena-X, etc.)
+Structural Health Monitoring of existing and new components
+Basic project requirements
+Your project should:
+.
+offer relevant contributions to the above-mentioned scope of the call,
+address at least one of the fields mentioned in the call description and
+focus on experimental development (TRL 4-6) thus demonstrating the potential to
+research or develop a product, process or service for commercialisation.
+3For further requirements, please check section "Eligibility".
+International Events and Matchmaking
+Online Matchmaking Platform
+https://eureka-lightweighting-call-2025.b2match.io/
+4-5 June ELN-Konference Kraków/Poland
+A hybrid matchmaking event is planned
+National Events
+Please contact your national funding body for consulting needs and information on national or
+regional events related to this call.
+Funding²
+Funding will only be provided to projects that are positively evaluated by all relevant
+participating national funding bodies. Funding of project partners is subjected to budgetary
+availability and national funding conditions stipulated by each national funding body.
+Austria (FFG)
+Belgium /
+Wallonia
+(SPW Research)
+Belgium/
+Flanders
+(VLAIO)
+Chile (CORFO)
+France
+(Bpifrance)
+Grant of up to 80% for small companies, up to 70% for medium-sized
+companies, up to 55% for large companies and up to 85% for research
+institutions
+Funding is granted in the form of a grant with a funding rate ranging from
+40% to 80% of the budget of each Walloon company. The funding rate
+depends on the size of the Walloon company, the consortium composition
+at regional and international level and whether the project activities fall
+into the category of industrial research or experimental development.
+Subcontracting to research organisations is allowed up to 20% of the total
+company(ies) budget.
+Companies based in Flanders can apply for grant funding via a
+development project and receive up to 60% of the eligible project costs, to
+a maximum of €500,000 per project. Staff and other costs can be funded
+with a 25% to 60% subsidy of the project budget, with a minimum budget
+equivalent to support of € 25,000.
+Funding is available for Chilean companies on an open budget basis
+through a matching grant of a maximum of approximately €214,000
+(CLP$220 million) per project, which varies according to company size:
+40% for large companies, 60% for medium-sized companies, and 80% for
+small companies. An extra 10% funding is available for female-led
+companies. Firms must be at least 24 months old. Universities and research
+centres are not eligible to receive funding directly from Corfo, but they can
+participate as project collaborators.
+Funding in the form of loan or reimbursable advance from €50,000 and
+up to €3 million:
+up to 80% of eligible costs for SME's
+up to 40% for companies with up to 2,000 full-time employees
+2
+Please refer to section Funding conditions and rules per NFB & Contacts for details on funding.
+4Germany
+Lithuania
+(Research
+Council of
+Lithuania)
+Poland
+There is no direct funding for universities nor research institutions (self-
+funded or subcontractors). Large companies with more than 2,000 full-
+time equivalent employees are not eligible for public funding.
+In order to check their eligibility, French participants must contact their
+Bpifrance chargé d'affaires innovation, cc international.innoproject@
+bpifrance.fr, prior to applying. Then, the national funding application
+must be submitted on Bpifrance En Ligne platform before 6 November
+2025. The Bpifrance en Ligne account will be opened with the help of the
+chargé d'affaires innovation.
+German partners can choose from existing national programmes to
+finance their share of the project.
+For most SMEs, the "Zentrales Innovationsprogramm Mittelstand" (ZIM)
+of the Federal Ministry for Economic Affairs and Climate Action (BMWK)
+is the recommended option. German research institutes/universities can
+participate as additional partners according to the ZIM rules or the rules
+of another selected programme.
+Other funding programmes may be used if ZIM eligibility requirements
+are not met. For more information, please contact the German Eureka
+office.
+Type of funding: Grant
+Call for projects budget: €1 million
+The Research Council of Lithuania funds projects led by research
+institutions with at least one Lithuanian industrial partner. The call for
+projects budget is up to €1 million. The budget per project is up to
+€300,000.
+Funding rates can reach up to 100% for research institutions and up to
+80% for industrial partners (depending on their size).
+For more information, please contact the Lithuanian NPC.
+To be eligible for NCBR support, a Polish applicant must
+be a Poland-based business, of any size
+be a research and knowledge disseminating organisation
+Only Polish micro, small or medium-sized enterprises (SME) can apply
+individually. While universities, research institutions and large
+enterprises are eligible for funding and may lead Polish domestic
+consortia, the presence of a Polish SME is obligatory in such consortium.
+NCBR can fund a proportion of industrial research and development
+works project costs. This proportion depends on the size of your business
+and will be described in detail in the national rules:
+Industrial research
+(basic level: 50%)
+Micro or small
+up to 80%
+enterprise
+Medium-sized
+enterprise
+up to 80%
+Development works
+(basic level: 25%)
+up to 70%
+up to 60%
+5Large enterprise
+up to 75%
+up to 50%
+Research-performing
+and/or knowledge-
+disseminating
+organisation
+100%
+100%
+Portugal (ANI)
+Slovakia
+South Korea
+(KIAT)
+Spain (CDTI)
+Please note that NCBR's maximum total project grant to Polish applicants
+is no larger than PLN 2 million, with no more than PLN 1 million per
+partner.
+As explained above, large enterprises as well as research and knowledge
+disseminating organisations can be leaders or partners on the project but
+cannot apply individually.
+Eligibility of the costs and funding rates can be found at:
+https://www.gov.pl/web/ncbr/platforma-konkursowa#/ncbr?sort=
+announcementDate,desc&currentPage=0&limit=10
+ANI covers up to a maximum of 80% of project costs for SMEs and
+small mid-cap companies and 85% of project costs for research
+institutions and other non- entrepreneurial entities from the
+research and innovation system (ENESII).
+For investments located at NUT II Lisboa, the maximum co-
+funding rate is 40% of eligible costs.
+The exact funding percentage depends on the company size, consortium
+collaboration, dissemination of project results and whether your project
+activities fall into the category of industrial research or experimental
+development.
+For more information, please contact the Portuguese NPC.
+Slovak participants can obtain cofounding up to 80% of eligible costs for
+small companies / up to 75% for medium-sized companies / up to 65%
+for large companies / universities a research organisations up to 100%.
+Maximum cofounding up to €150,000 for 36 months.
+Type of funding: Grant
+Call for projects budget: €1 million
+Organisations can receive a grant of up to 500 million South Korean won
+(approximately €370,000) per year, and the project period should be up
+to 3 years.
+SMEs can receive up to 67% of project costs, mid-tier companies can
+receive up to 50% of project costs, large companies can receive up to 33%
+of project costs and universities and research organisations can receive
+up to 100% of project costs.
+Main features of the funding for Spanish companies are: Soft loan up to
+85% of eligible costs (Euribor 1 year interest fee) Minimum budget
+€175,000 (no maximum budget). Long recovery period (10 or 15 years)
+where 22.5% of the eligible costs have not to be repaid.
+Type of funding: Grant
+Türkiye
+(TÜBİTAK)
+Call for projects budget: €2.5 million
+6Ukraine
+The TÜBİTAK 1719 - EUREKA NETWORK 2025 LIGHTWEIGHTING
+TECHNOLOGIES CALL will be followed at the national level under the
+1719 - EUREKA Network Calls framework. Capital companies, higher
+education institutions, public research centers and institutes, training and
+research hospitals, and other eligible organizations can participate as
+project partners.
+Under this call, SMEs are supported at a rate of 75%, large-scale
+companies at 60%, and public institutions, foundation universities,
+training and research hospitals, as well as public research centers and
+institutes at 100%.
+For projects applying to this call, the total project budget for Turkish
+project partners cannot exceed €500,000. The budget for institutions
+other than capital companies can be at most 50% of the total project
+budget and cannot exceed €250,000 in total. Additionally, institutions
+other than capital companies are not eligible to apply alone.
+Applicants must follow the national call, consider the specified deadlines
+and rules, and ensure compliance with the requirements.
+Funding Body: Ministry of Education and Science of Ukraine
+Ukrainian research institutions and higher education institutions are
+eligible to receive grants of up to 199,000 UAH (according to the exchange
+rate applicable at that time, now approximately €4,400) per year for a
+project duration of up to 3 years. It is recommended to include a
+Ukrainian SME as part of the consortium.
+If there is no allocated budget for your organisation type in your country and you want to
+participate in a project consortium, contact your national funding body to see whether there are
+other funding opportunities available or talk to them about self-funding.
+Eligibility
+Eureka has limited eligibility criteria for organisations participating in a Network projects
+consortium:
+.
+●
+Your project idea must represent international cooperation in the form of a specific
+project.
+The project must be directed at researching or developing an innovative product,
+process or service with the goal of commercialisation.
+The project must have a civilian purpose.
+Your consortium should include at least two independent legal entities from a minimum
+of two Eureka countries supporting the call.
+No single organisation or country can be responsible for more than 70% of the project
+budget.
+This call for projects has additional criteria for organisations to be eligible to receive funding:
+The project must benefit all involved partners.
+7.
+The project should have an obvious benefit and added value resulting from the
+technological cooperation between the participants from the different countries
+(e.g. increased knowledge base, commercial leads, access to R&D infrastructure
+etc.).
+The product or process must be innovative and with the potential to create impact.
+The maximum duration of a project may not exceed 36 months.
+A signed consortium agreement is required upon approval, before the actual start
+of the project. It ought to include, amongst others, the ownership and use of know-
+how and IPR settlements
+Application
+1. Contact your national funding body to discuss your project idea, financial viability,
+eligibility and national procedures.
+2. Create an account on our application portal https://eureka.smartsimple.ie/ (one per
+consortium) and select the funding opportunity you want to apply to.
+3. Using the portal, complete one application form per consortium (in English) and
+invite other consortium partners to fill in a partner form.
+4. Upload a GANTT chart (one per consortium), a signed and completed co-signature form
+(which you can download from the platform) and any additional required annexes.
+5. Your application will be checked for completeness and eligibility before being reviewed
+using a standard evaluation procedure. If successful, your project will receive an Eureka
+label.
+6. Your national funding body may carry out a further evaluation (performed by the NPC
+and technical experts) according to national rules before allocating funds to successful
+applicants.
+7. The final step is to complete and sign a consortium agreement (CA). We recommend that
+you seek legal advice when drafting your CA.
+For detailed information on national rules and application procedures, please see Section
+"Funding conditions and rules per NFB".
+Country evaluation process
+Your project application will be reviewed according to the following additional national
+evaluation processes:
+Austria
+Belgium /
+Wallonia
+In addition to the Eureka project application, Austrian participants must
+submit a national project application via e-Call at the FFG webpage
+(https://ecall.ffg.at/) before 23 October 2025 17:00 CEST. The national
+application must include the Eureka project proposal and a national project
+proposal. The evaluation of the national project application in Austria is
+carried out by external experts.
+Applicants in Wallonia (Belgium) must submit their regional application (in
+French) to SPW Research via the ONTIME portal (https://recherche-
+technologie.wallonie.be/ontime) before 23 October 2025 17:00 Brussels.
+time.
+8Belgium /
+Flanders
+Chile
+France
+Germany
+Lithuania
+Poland
+Portugal
+Please consult recherche.wallonie.be/eureka for further information on
+eligibility criteria and evaluation/selection procedures.
+A preliminary contact with the Walloon Eureka team is highly recommended.
+In addition to the centrally submitted Eureka Project Application Form,
+partners from Flanders need to submit an application to VLAIO, including a
+project plan and budget. We invite Flemish partners to contact us for a pre-
+check of their project ideas and get support by our team VLAIO advisors. The
+deadline for submission the VLAIO application 23 October 2025 17:00
+Brussels time.
+The application process for this call for proposals has two phases: Phase 1:
+International, where projects applications are submitted through the Eureka
+System; and Phase 2: National Funding, where Chilean companies with
+projects regarded as eligible in Phase 1 apply for funding to Corfo.
+Corfo will review project applications submitted through the Eureka system
+(Phase 1) and decide about eligible projects allowed to apply to national
+funding through the “Crea y Valida – Eureka” programme. Only companies
+that are selected and allowed to move to Phase 2 can apply to national
+funding from Corfo.
+In order to check their eligibility, French participants must contact their
+Bpifrance chargé d'affaires innovation, cc international.innoproject@
+bpifrance.fr, prior to applying. Then, the national funding application must
+be submitted on Bpifrance En Ligne platform before 6 November 2025. The
+Bpifrance en Ligne account will be opened with the help of the chargé
+d'affaires innovation.
+In addition to the Eureka application, German partners aiming to receive
+funding must apply through their chosen national funding programme. The
+respective national rules apply in each case.
+For ZIM applications
+Detailed criteria are available on the ZIM website (in German). Applications
+must comply with ZIM guidelines and be written in German. In order to
+assess the eligibility of your project idea for ZIM, please submit a project
+outline as described here.
+Each Lithuanian participant will be invited to register in the national e-grant
+system and asked to upload a pdf of the Eureka application, including
+national declarations, financial viability documents, etc. The Research
+Council of Lithuania uses the international application as grounds for the
+national evaluation.
+For more information, please contact the Lithuanian NPC.
+In addition to the SmartSimple form, Polish applicants will be requested to
+submit their domestic application with relevant attachments, as per the
+information available at https://www.gov.pl/web/ncbr/platforma-
+konkursowa#/ncbr?sort=announcementDate,desc&currentPage=0&limit=10
+from the evening of 16 May 2025 onwards.
+Portuguese funding body, the Agência Nacional de Inovação (ANI), funds
+R&D costs for SMEs and small mid-cap companies, R&D centres and
+academia. Large companies are not eligible for funding.
+For more information, please contact the Portuguese NPC.
+9Slovakia
+South Korea
+Spain
+Türkiye
+Ukraine
+The participant must send the information about the technological area of
+the project to the national project coordinator. The national System and code
+list of science and technology area website:
+https://www.minedu.sk/sustava-a-ciselnik-odborov-vedy-a-techniky/
+The national application must include the Eureka project application and a
+national project proposal. (Please refer to the national call text for the
+additional document on https://kiat.or.kr)
+National project applications must be submitted online via the Korean
+application system (www.k-pass.kr)
+In Spain the participants will have also to submit a formal R&D international
+project aid application through CDTI's website (https://sede.cdti.gob.es/) by
+the deadline of this call including the Eureka Application form (in English)
+and a draft consortium agreement (optional at this stage, but a signed
+consortium agreement must be signed and provided prior to obtaining the
+Eureka label endorsement). Additional documents in Spanish language,
+containing detailed information on the Spanish participants, could be
+requested depending on the specific type of funding requested by the
+company. If the application is not submitted in time by the deadline of this
+call for project, the international project could be rejected.
+CDTI will check the eligibility of the Spanish applicants after receiving the
+international application. If it is eligible, funding applications will be
+generated by CDTI to each Spanish company. Those funding applications
+must be completed and submitted by them. Deadline to reply is
+approximately one month after the deadline of the call. If the funding
+applications are not submitted in time, the international project could be
+rejected.
+Within the scope of the TÜBİTAK 1719 - Eureka Network 2025
+Lightweighting Technologies Call, which is a national call, applicants must
+submit a national application, as the evaluation process is conducted at the
+national level. Failure to do so will result in the project being deemed
+ineligible. Additionally, higher education institutions, public research centers
+and institutes, education and research hospitals, and research
+infrastructures covered by Law No. 6550 are not eligible to apply
+independently. Applications from these institutions are only accepted if they
+partner with at least one capital company, and the lead organization
+(applicant organization) must be a capital company.
+Applicants must also follow the national application deadlines and
+conditions to ensure compliance. For further information regarding the
+financing of Turkish participants, please contact TÜBİTAK directly. Detailed
+information can also be accessed here, and the national rules and conditions
+will be published on the TÜBİTAK TEYDEB 1719 Calls page at
+https://tubitak.gov.tr/tr/destekler/sanayi/uluslararasi-ortakli-destek-
+programlari/1719-eureka-network-cagrilari.
+Alongside the Eureka project application, Ukrainian participants submit a
+national project application. This national submission must include a
+Ukrainian-language version of the Eureka project proposal, along with a
+detailed project plan and budget.
+For full details on national funding rules and eligibility criteria, please
+contact the Ukrainian NPC.
+10Evaluation
+Eureka Network Evaluation
+Your project application will be reviewed according to our Network projects evaluation
+methodology.
+1. Impact
+.
+Is the market properly addressed (i.e. size, access and risks)?
+Is the value creation properly addressed (i.e. employment opportunities and
+environmental and societal benefits)?
+What are the competitive advantages of your project (i.e. strategic importance,
+enhanced capabilities and visibility)?
+Are your commercialisation plans clear and realistic (i.e. return on investment,
+geographical and sectoral impact)?
+2. Excellence
+.
+What is the degree of innovation? (i.e. is the proposed product, process or service
+state-of-the-art? Is there sufficient technological maturity and risk)?
+How is the new knowledge going to be used?
+Is your project scientifically and technically challenging for consortium partners?
+Is the technical achievability and risk properly addressed?
+3. Quality and efficiency of implementation
+•
+What is the quality of your consortium (i.e. balance of the partnership and
+technological, managerial and financial capabilities of each partner)?
+Is there added value through international cooperation?
+Is your project management and planning realistic and clearly defined (i.e.
+methodology, planning approach, milestones and deliverables)?
+Is your cost structure reasonable (i.e. costs and financial commitment for each
+consortium partner)?
+4. Overall perception
+Experts will list three positive and negative points to your application and finally state
+whether they recommend your project for public investment.
+Your national funding body may carry out a further evaluation (performed by the national
+project coordinator and technical experts) according to national rules before allocating funds to
+successful applicants.
+11Funding conditions, rules and contacts per country/region
+Austria
+Topics of
+Interest
+Timeline -
+National
+Application
+Same as in the Eureka call, priority is given to Lightweighting technologies in the
+mobility sector.
+23 October 2025 17:00 CEST
+Budget
+Specific
+National rules
+Eligible costs
+and funding
+rates
+Additional
+documents
+required
+Contact persons
+€2,000,000 (dedicated to the mobility sector)
+FFG will finance industrial research and/or experimental development activities of
+Austrian organisations. FFG provides the Eureka funding scheme illustrated below.
+Details on the Eureka application and on the national application:
+https://www.ffg.at/europa/ausschreibungen/eureka lightweighting call2025
+National project applications must be submitted online via FFG eCall:
+https://ecall.ffg.at
+Eligible costs: https://www.ffg.at/recht-finanzen/kostenleitfaden
+Funding rates: up to 80% for small companies, up to 70% for medium sized
+companies, up to 55% for large companies and up to 85% for research institutions.
+The national application must include the Eureka project proposal and a national
+project proposal.
+Johannes Fritzer
+Expert Thematic Programme
+Email: johannes.fritzer@ffg.at
+Tel: +43 57755-5032
+Michael Walch
+Eureka NPC
+Email: michael.walch@ffg.at
+Tel: +43 57755-4901
+Belgium (Flanders)
+Timeline -
+National
+Application
+Budget
+Specific National
+rules
+Eligible costs and
+funding rates
+Additional
+documents
+required
+The deadline for online submission of the VLAIO application is 23 October 2025
+17:00 Brussels time.
+€1,000,000
+Applicants in Flanders (Belgium) must submit their regional application online
+via www.vlaio.be/nl/subsidies-financiering/ontwikkelingsproject, pink button
+'Aanvragen'.
+For this call only development projects (an innovative idea that can lead to
+successful business in the short term, but there are still some challenges to
+overcome in developing this innovation) will be accepted. Flemish companies can
+apply for funding via subsidies. Flemish or foreign academic partners or research
+institutes can be funded by VLAIO if their expertise is crucial.
+Companies based in Flanders can apply for grant funding via a development
+project and receive up to 60% of the eligible project costs, to a maximum of
+€500,000 per project. Staff and other costs can be funded with a 25 to 60%
+subsidy of the project budget, with a minimum budget equivalent to support of
+€25,000.
+General information: www.vlaio.be/nl/subsidies-
+financiering/ontwikkelingsproject
+In addition to the centrally submitted Eureka Project Application Form, partners
+from Flanders need to submit an application to VLAIO, including a project plan
+and budget. We invite Flemish partners to contact us for a pre-check of their
+12Contact persons
+project ideas and get support by our team VLAIO advisors. The deadline for
+submission the VLAIO application is 23 October 2025 17:00 Brussels time.
+Lieve Apers
+lieve.apers@vlaio.be
+Belgium (Wallonia)
+Timeline -
+National
+Application
+Budget
+Specific National
+rules, eligible
+costs and funding
+rates, and
+additional
+documents
+required
+Contact persons
+Applicants in Wallonia (Belgium) must submit their regional application (in
+French) to SPW Research via the ONTIME portal (https://recherche-
+technologie.wallonie.be/ontime) before 23 October 2025 17:00 Brussels time.
+Not limited
+Funding is granted in the form of a grant or a recoverable advance with a funding
+rate ranging from 40% to 100% of the budget of each Walloon partner. The type
+of funding and percentage depend on the type of partner, the consortium
+composition at regional and international level and whether your project
+activities fall into the category of industrial research or experimental
+development. The research budget of the Walloon partner company(ies) must
+correspond to at least 40% of the total budget of all Walloon partners.
+For further information: recherche.wallonie.be/eureka
+It is highly advised that an information meeting between the Walloon project
+partners and the officers responsible for the programme within SPW Research is
+held prior to the submission of a proposal.
+Fabrice QUERTAIN fabrice.quertain@spw.wallonie.be
+Julie JASMES julie.jasmes@spw.wallonie.be
+Chile
+Timeline -
+National
+Application
+Budget
+Specific National
+rules
+Eligible costs and
+funding rates
+Additional
+documents
+required
+Details to be shared soon
+Corfo works on an open budget basis.
+Chilean companies must fulfil the funding criteria from the “Crea y Valida –
+Eureka" programme, which involves:
+Beneficiary must be a legal entity constituted in Chile.
+Company must be of a minimum of 24 months old (as registered in the tax
+office).
+Companies must show proven record of sales within the last 24 months prior
+to application (no need to be every month).
+Please refer to “Crea y Valida – Eureka” programme website and documentation
+where rules on eligible costs are clearly specified.
+Funding rates are:
+A matching grant of maximum €214,000 approx. (CLP$220 million) per
+project, which varies according to firm size: 40% large; 60% medium; and
+80% small.
+Extra 10% funding for female-led companies
+In addition to the Eureka Application in Phase 1, Chilean companies that
+move to national funding in Phase 2 must complete the online application
+form available for the "Crea y Valida -Eureka" programme through Corfo's
+application system. This form asks for detailed information regarding the
+project's technical, financial, and human resources dimensions. Please refer
+to the documentation for further information about company requirements,
+project content and evaluation criteria.
+13Contact persons
+Each consortium must also submit a draft international project consortium
+agreement.
+All requirements are specified in detail in the documents available in the "Crea y
+Valida - Eureka" programme website.
+Jocelyn Olivari (Eureka NPC)
+jocelyn.olivari@corfo.cl
+Cristian Casanueva (Eureka Project Officer)
+cristian.casanueva@corfo.cl
+France
+Timeline -
+National
+Application
+Budget
+Specific National
+rules
+Eligible costs and
+funding rates
+Additional
+documents
+required
+Contact persons
+French participants must contact their Bpifrance chargé d'affaires
+innovation, cc international.innoproject@bpifrance.fr before the
+submission deadline to discuss their eligibility and project.
+Applicants from France must submit their national application on 6
+November 2025 at the latest on Bpifrance En Ligne platform.
+Open budget
+SMEs and large companies below 2,000 FTE are eligible for funding. French
+participants must contact their Bpifrance chargé d'affaires innovation, cc
+international.innoproject@bpifrance.fr prior to applying in order to check their
+eligibility. Then, the national funding application must be submitted on Bpifrance
+En Ligne platform.
+The French funding scheme (ADI - Aide pour le Développement de l'Innovation)
+is the following:
+Eligible entity: Innovative company up to 2,000 FTEs
+Eligible costs: Industrial research and experimental development
+(industrialisation and commercialisation costs are not eligible)
+Funding amount: from €50,000 up to €3 million (submitted to financial
+analysis of the company and financial conditions)
+Funding type: Reimbursable advance in case of technical success (up to
+65%) or R&D loan with deferred reimbursement (up to 80%)
+Duration: maximum of 36 months
+In any case, all the above information could be adapted to the profile and project
+of the company.
+Before the application, the French partner can apply to a Diagnostic Partenariat
+Tech International, if they plan on working with an external expert to help them
+build their consortium, project or application. The Diagnostic is a grant covering
+up to 50% of the expert's consultancy services (see limit depending on whether
+the company is the consortium leader) and planning on helping companies
+structuring their international collaborative project.
+Camille Tang-Taye Pinois,
+Bpifrance International Innovation Team
+international.innoproject@bpifrance.fr
+Germany
+Timeline -
+National
+Application
+German participants are free to choose from the existing funding programmes in
+Germany. The application procedure depends on the national funding
+programme chosen.
+14Budget
+Specific National
+rules
+Eligible costs and
+funding rates
+Additional
+documents
+required
+Contact persons
+If applying for "Zentrales Innovationsprogramm Mittelstand" (ZIM) of the Federal
+Ministry for Economic Affairs and Climate Action (BMWK), there is no fixed
+deadline (rolling submissions are possible). However, to facilitate a timely project
+start, it is strongly recommended to contact the ZIM project management agency
+(AiF Projekt GmbH) well in advance and to submit a short project outline, which
+can serve as the basis for an initial, non-binding assessment of your planned
+project (Projektskizzen-Check).
+German funding is provided according to the rules of the chosen national
+programme and subject to available funds.
+German partners can choose from existing national programmes to cover their
+project share.
+ZIM (recommended for most SMEs): Under ZIM, German companies
+with fewer than 1,000 employees (or consortia consisting of such
+enterprises) may apply. Companies with 500 or more employees must
+involve at least one SME in their project. Applications must be in German
+and must comply with the ZIM guidelines. For detailed criteria, please
+see the ZIM website (in German). German research
+institutes/universities can be additional partners under ZIM.
+Other national programmes: If your organization/consortium is not
+eligible under ZIM, other programmes may be used. Please contact the
+German Eureka office for advice.
+The funding rates vary depending on the selected funding programme.
+ZIM (BMWK)
+Detailed criteria can be found on the ZIM website (in German).
+The requirements vary depending on the selected funding programme.
+ZIM (BMWK)
+German Eureka office
+AiF Projekt GmbH - Project Management +49 228 3821-1352
+Agency
+eureka@dlr.de
+Antragstellung für Kooperationsprojekte German Eureka office
+Lithuania
+Timeline -
+National
+Application
+Budget
+Specific National
+rules
+Eligible costs and
+funding rates
+The deadline for national applications is the same one as for the Eureka
+Lightweighting call: 23 October 2025 17:00 CEST
+€1,000,000
+Research Council of Lithuania funds projects led by research institutions with at
+least one Lithuanian industrial partner. The call for projects budget is up to €1
+million. The budget per project is up to €300,000.
+Eligible costs are:
+Personnel costs: salaries, social security contributions, taxes and any
+supplementary payments made to employees within national law and
+benefits schemes paid by the company.
+Travel costs.
+Fixed assets.
+Indirect costs (overhead): 3%
+Funding rates can reach up to 100% for research institutions and up to 80% for
+industrial partners (depending on their size).
+15Additional
+documents
+required
+Contact persons
+Poland
+Details to be shared soon
+Details to be shared soon
+Timeline -
+National
+Application
+Budget
+Specific National
+rules
+Eligible costs and
+funding rates
+Additional
+documents
+required
+Contact persons
+16 May 17 October 2025, 14:00 CEST
+-
+PLN 10 million
+While Poland does not participate in the Lightweighting call as such, Polish
+entities are free to submit their Lightweighting-related proposals in the standard,
+thematically-agnostic call which Poland will open on 16 May and close on 17
+October 2025. More details for Polish entities will be available at
+https://www.gov.pl/web/ncbr/platforma-
+konkursowa#/ncbr?sort=announcementDate,desc&currentPage=0&limit=10
+from the evening of 16 May 2025 onwards.
+As per the information available at https://www.gov.pl/web/ncbr/platforma-
+konkursowa#/ncbr?sort=announcementDate,desc&currentPage=0&limit=10
+from the evening of 16 May 2025 onwards.
+Andrzej Wajs
+andrzej.wajs@ncbr.gov.pl
++48 516 958 527
+Portugal
+Timeline -
+National
+Application
+Budget
+Specific National
+rules
+SIID-Internationalization of R&D Phase 4 for new applications
+SIID – Internacionalização de I&D - Operações de I&D industrial à escala europeia
+Portuguese funding body, the Agência Nacional de Inovação (ANI), funds R&D
+costs for SMEs and small mid-cap companies, R&D centres and academia. Large
+companies are not eligible for funding.
+Your project must fall within national or regional Research and Innovation
+Strategy for Smart Specialisation priority areas.
+To be eligible for funding, projects must involve at least one Portuguese SME or
+small mid-cap company. When in a consortium with other Portuguese research
+organisations or universities, Portuguese companies must undertake the biggest
+share of the investment.
+Portuguese companies need to comply with the following financial autonomy
+ratios:
+If SME or small mid-cap company: 15%
+Companies that have been active for less than one year at the date of the
+application must demonstrate the capacity to finance the project with
+equity, equal to or greater than 20% of eligible costs.
+16Eligible costs and
+funding rates
+Additional
+documents
+required
+Contact persons
+ANI covers up to a maximum of 80% of project costs for SMEs and small mid-cap
+companies and 85% of project costs for research institutions and other non-
+entrepreneurial entities from the research and innovation system (ENESII).
+For investments located at NUT II Lisboa, the maximum co-funding rate is 40% of
+eligible costs.
+The exact funding percentage depends on the company dimension, consortium
+collaboration, dissemination of project results and whether your project activities
+fall into the category of industrial research or experimental development.
+For more information, please contact the Portuguese NPC.
+Polina Pereira
+polina.pereira@ani.pt
+Mob: +351 912 425 772
+Slovakia
+Budget
+Specific National
+rules
+Eligible costs and
+funding rates
+Additional
+documents
+required
+Contact persons
+Open budget
+The R&D must be declared in The Business Register of the Slovak Republic as the
+objects of the company.
+All categories of costs are eligible: admin, material, amortization, services (less
+than 50% of budget), travel costs, other development costs etc.
+Participant in Slovakia can receive a grant of up to €150,000
+-
+Up to 80% of eligible project costs for startups and small companies
+Up to 75% of eligible project costs for medium sized companies
+Up to 65% of eligible project costs for large companies
+Up to 100% of eligible project costs for research organisations and universities
+The participant must send the information about the technological area of the
+project to the national project coordinator. The national System and code list of
+science and technology area website: https://www.minedu.sk/sustava-a-
+ciselnik-odborov-vedy-a-techniky/
+Martin Kontrík
+Eureka NPC
+e-mail: martin.kontrik@minedu.sk
+Tel: +421 2 5937 4754
+South Korea
+Timeline -
+National
+Application
+Budget
+Specific National
+rules
+National application submission deadline:
+24 October 2025 16:00 KST (CEST 09:00)
+€1,000,000
+KIAT will fund the industrial research and/or technological development
+activities of Korean companies, universities and research institutions.
+The Korean consortium must include at least one Korean private company. The
+company in the Korean consortium must have been in operation for at least one
+year by the application deadline, and the company is required to have a
+"corporate R&D center certification" issued by the Korean Government (Korea
+Industrial Technology Association).
+Eureka projects can be submitted to KIAT's international technology cooperation
+programme for funding, which provides Eureka's funding scheme
+17Eligible costs and
+funding rates
+Additional
+documents
+required
+National project applications must be submitted online via the Korean
+application system (www.k-pass.kr)
+Type of funding: Grant
+Call for projects budget: €1 million
+Organisations can receive a grant of up to 500 million South Korean won
+(approximately €370,000) per year, and the project period should be up to 3
+years.
+SMEs can receive up to 67% of project costs, mid-tier companies can receive up
+to 50% of project costs, large companies can receive up to 33% of project costs
+and universities and research organisations can receive up to 100% of project
+costs.
+The national application must include the Eureka project application and a
+national project proposal. (Please refer to the national call text for the
+additional document on https://kiat.or.kr)
+National project applications must be submitted online via the Korean
+application system (www.k-pass.kr)
+Contact persons
+Youngji Tak
+National Project Coordinator
+Email: yjtak@kiat.or.kr
+Tel: +32 2 431 0591
+Heeweon Lee
+Researcher
+Email: leejen@kiat.or.kr
+Tel: +82 2 6009 3768
+Spain
+Timeline -
+National
+Application
+Budget
+Specific National
+rules
+Eligible costs and
+funding rates
+Additional
+documents
+required
+Contact persons
+International application must be registered in CDTI portal by the deadline of this
+call. Funding application must be registered in CDTI portal one month after the
+deadline of the call
+No limits
+CDTI will finance industrial research and/or technological development activities
+of Spanish companies. Universities and research centres could take part as
+subcontractors. For more information please access:
+https://www.cdti.es/ayudas/proyectos-de-i-d
+It is mandatory that project activities do not start before submitting the funding
+applications to CDTI.
+Main features of the funding for Spanish partners are: Soft loan up to 85% of
+eligible costs (Euribor 1 year interest fee) Minimum budget €175,000 euros (no
+maximum budget). Long recovery period (10 or 15 years) where 22.5% of the
+eligible costs have not to be repaid. For more information please access:
+https://www.cdti.es/ayudas/proyectos-de-i-d
+A full memory (in Spanish) must be attached to the funding application
+Antonio Gómez
+antonio.gomez@cdti.es
+Türkiye
+Timeline -
+National
+Application
+Budget
+National application submission deadline:
+23 December 2025
+€2,500,000
+18Specific National
+rules
+Eligible costs and
+funding rates
+Additional
+documents
+required
+Contact persons
+Within the scope of the TÜBİTAK 1719 - Eureka Network 2025 Lightweighting
+Technologies Call, which is a national call, applicants must submit a national
+application, as the evaluation process is conducted at the national level. Failure to
+do so will result in the project being deemed ineligible. Additionally, higher
+education institutions, public research centers and institutes, education and
+research hospitals, and research infrastructures covered by Law No. 6550 are not
+eligible to apply independently. Applications from these institutions are only
+accepted if they partner with at least one capital company, and the lead
+organization (applicant organization) must be a capital company.
+For projects applying to this call, the total project budget for Turkish project
+partners cannot exceed €500,000. The budget for institutions other than capital
+companies can be at most 50% of the total project budget and cannot exceed
+€250,000 in total.
+Type of funding: Grant
+Call for projects budget: €2.5 million
+Within the scope of the call, the support rate for large-scale enterprises is 60%,
+while for SMEs, it is 75%.
+Public administrations within the general budget framework, as well as publicly
+funded agencies such as foundation universities, education and research
+hospitals, and public research centres and institutes, are eligible for 100%
+support.
+After applying to the international call, submitting a national application in
+accordance with the timeline is mandatory. Applicants must also follow the
+national application deadlines and conditions to ensure compliance. For further
+information regarding the financing of Turkish participants, please contact
+TÜBİTAK directly. Detailed information can also be accessed here, and the
+national rules and conditions will be published on the TÜBİTAK TEYDEB 1719
+Calls page at https://tubitak.gov.tr/tr/destekler/sanayi/uluslararasi-ortakli-
+destek-programlari/1719-eureka-network-cagrilari.
+Following the international application, you may submit your national
+application in line with the call calendar at https://eteydeb.tubitak.gov.tr
+Emine Elif Ocakcı
+Project Officer
+eureka@tubitak.gov.tr
+Burcu Koç Haskılıç
+National Programme Coordinator
+eureka@tubitak.gov.tr
+Ukraine
+Timeline -
+National
+Application
+Budget
+Specific National
+rules
+Eligible costs and
+funding rates
+Additional
+documents
+required
+The national application process follows the same timeline as the Eureka
+application process.
+Alongside the Eureka project application, Ukrainian participants submit a
+national project application
+Up to 199,000 UAH (according to the exchange rate applicable at that time, now
+approximately €4,400) per year for a project duration up of 3 years
+Ukrainian research institutions and higher education institutions are eligible for
+funding. It is recommended to include a Ukrainian SME as part of the consortium.
+Ukraine can provide funding for up to 2-3 project participants under this call,
+with the possibility of supporting more if additional budgetary resources are
+available.
+Funding may be allocated for research equipment, salaries, business trips, and
+service fees (excluding utility costs)
+Alongside the Eureka project application, Ukrainian participants submit a
+national project application. This national submission must include a Ukrainian-
+19Contact persons
+language version of the Eureka project proposal, along with a detailed project
+plan and budget.
+Olena Makarenko (Eureka NPC)
+olena.makarenko@mon.gov.ua
++38044 287 82 35
+20

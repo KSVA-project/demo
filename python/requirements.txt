@@ -1,6 +1,8 @@
-# PDF 및 테이블 추출
-camelot-py[cv]
+# PDF 처리 및 OCR
 PyMuPDF
+pdf2image
+Pillow
+google-cloud-vision
 
 # 데이터 처리
 pandas
@@ -11,7 +13,7 @@ tqdm
 langchain
 langchain-community
 langchain-core
-langchain-chroma`
+langchain-chroma
 chromadb
 
 # 임베딩 모델 (HuggingFace)
@@ -30,3 +32,15 @@ python-multipart
 python-dotenv
 aiofiles
 httpx
+
+# 환경 변수 로드
+python-dotenv
+
+# 스케줄러
+apscheduler
+
+# OpenTelemetry + Chroma 의존성 충돌 해결용
+opentelemetry-api
+opentelemetry-sdk
+opentelemetry-exporter-otlp-proto-grpc
+protobuf
