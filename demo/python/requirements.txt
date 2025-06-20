@@ -1,0 +1,32 @@
+# PDF 및 테이블 추출
+camelot-py[cv]
+PyMuPDF
+
+# 데이터 처리
+pandas
+tabulate
+tqdm
+
+# LangChain 및 관련 기능
+langchain
+langchain-community
+langchain-core
+langchain-chroma`
+chromadb
+
+# 임베딩 모델 (HuggingFace)
+sentence-transformers
+transformers
+huggingface-hub
+
+# OpenAI (LLM 사용)
+openai
+
+# FastAPI + Middleware
+fastapi
+uvicorn
+pydantic
+python-multipart
+python-dotenv
+aiofiles
+httpx

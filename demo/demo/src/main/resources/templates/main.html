@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>E-지원</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f3f4f6;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .wrapper {
+            display: flex;
+            width: 90vw;
+            height: 90vh;
+            max-width: 1200px;
+            max-height: 800px;
+            border-radius: 16px;
+            overflow: hidden;
+            background-color: #ffffff;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        /* 사이드바 */
+        .sidebar {
+            width: 240px;
+            background-color: #f9fafb;
+            color: #111827;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .sidebar .team-name {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            text-align: center;
+            font-weight: bold;
+            color: #1f2937;
+        }
+
+        .sidebar button {
+            background-color: #e0e7ff;
+            border: none;
+            color: #3730a3;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: background-color 0.2s;
+        }
+
+        .sidebar button:hover {
+            background-color: #c7d2fe;
+        }
+
+        /* 채팅 리스트 */
+        .chat-list {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 6px;
+        }
+
+        .chat-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            color: #111827;
+            background-color: transparent;
+            transition: background-color 0.2s;
+            gap: 8px;
+        }
+
+        .chat-item:hover {
+            background-color: #f3f4f6;
+        }
+
+        .chat-icon {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+
+        .chat-name {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* X 버튼 (span) */
+        .delete-btn {
+            color: #6b7280;
+            font-size: 0.9rem;
+            padding: 4px 10px;
+            border-radius: 6px;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .delete-btn:hover {
+            background-color: #fef2f2;
+            color: #ef4444;
+        }
+
+        /* 채팅 영역 */
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: #ffffff;
+        }
+
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-bottom: 1px solid #e5e7eb;
+            color: #111827;
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: #1f2937; /* 진한 회색 글씨 */
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 0;
+            margin-left: 12px;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .logout-btn:hover {
+            color: #4f46e5; /* hover 시 은은한 보라색 강조 */
+        }
+
+        /* 메시지 */
+        .messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* 메시지 공통 영역 */
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            position: relative;
+            word-break: break-word;
+        }
+
+        /* AI 응답 메시지 (왼쪽, 말풍선 아님) */
+        .message.bot {
+            align-self: flex-start;
+            background-color: #ffffff;
+            color: #111827;
+            border-radius: 0;
+            padding: 0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* 사용자 메시지 (오른쪽) */
+        .message.user {
+            align-self: flex-end;
+            background-color: #d1fae5;
+            color: #065f46;
+            border-radius: 12px 12px 4px 12px;
+        }
+
+        /* 입력창 영역 */
+        /* 입력창 영역 */
+        .input-area {
+            position: relative; /* 버튼을 input 내부에 겹치기 위해 필요 */
+            padding: 16px;
+            background-color: #ffffff;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        /* 입력창 */
+        .input-area input {
+            width: 100%;
+            padding: 12px 44px 12px 12px; /* 오른쪽 버튼 공간 확보 */
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 1rem;
+            background-color: #ffffff;
+            box-sizing: border-box;
+        }
+
+        /* 전송 버튼 */
+        .input-area button {
+            position: absolute;
+            right: 28px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+            width: 24px;
+            height: 24px;
+        }
+
+        .input-area button:hover {
+            background-color: #f3f4f6;
+        }
+
+        /* 전송 아이콘 */
+        .input-area button img {
+            width: 18px;
+            height: 18px;
+            object-fit: contain;
+        }
+
+
+        /* 모달 */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal {
+            background: #ffffff;
+            padding: 24px;
+            border-radius: 12px;
+            width: 320px;
+            max-width: 90%;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal label {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .modal input {
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 16px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .modal input:focus {
+            border-color: #6366f1;
+        }
+
+        .modal .buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .modal button {
+            padding: 10px 16px;
+            font-size: 0.9rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-cancel {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-cancel:hover {
+            background: #d1d5db;
+        }
+
+        .btn-ok {
+            background: #6366f1;
+            color: white;
+        }
+
+        .btn-ok:hover {
+            background: #4f46e5;
+        }
+
+
+    </style>
+</head>
+<body>
+<div class="wrapper">
+
+    <div class="sidebar">
+        <h2 class="team-name">닫을결심</h2>
+        <button id="newChatBtn">새 채팅</button>
+        <div class="chat-list" id="chatList"></div>
+    </div>
+
+    <div class="chat-area">
+        <div class="chat-header" id="chatHeader">
+            <span id="chatTitle">새 채팅</span>
+            <p class="logout-btn" id="logoutBtn">My page</p>
+        </div>
+
+
+        <div class="messages" id="messages">
+            <div class="message bot">안녕하세요! 무엇을 도와드릴까요?</div>
+        </div>
+
+        <div class="input-area">
+            <input id="userInput" placeholder="메시지를 입력하세요..." type="text"/>
+            <button id="sendBtn">
+                <img alt="전송" class="send-icon" src="assets/img/submit_icon.png"/>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!--모달 창-->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+        <label for="modalInput">채팅 제목을 입력하세요</label>
+        <input id="modalInput" type="text"/>
+        <div class="buttons">
+            <button class="btn-cancel" id="modalCancel">취소</button>
+            <button class="btn-ok" id="modalOk">확인</button>
+        </div>
+    </div>
+</div>
+
+<script src="assets/js/main.js"></script>
+<script src="assets/js/chat.js"></script>
+
+</body>
+</html>
