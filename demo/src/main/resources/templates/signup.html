@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/style.css" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
+
     <meta charset="UTF-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>회원가입</title>
@@ -95,7 +101,7 @@
         button {
             width: 100%;
             padding: 10px;
-            background-color: #007bff;
+            background: linear-gradient(45deg, #3498db, #2ecc71);
             color: white;
             border: none;
             border-radius: 4px;
@@ -158,6 +164,46 @@
             white-space: nowrap;
         }
 
+        h2 {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px 4px;
+            padding: 0;
+        }
+
+        .checkbox-grid label {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            gap: 4px;
+            white-space: nowrap;
+            line-height: 1.2;
+            width: 100%; /* label 전체 너비 채우기 */
+            justify-content: flex-start; /* 왼쪽 정렬 */
+        }
+
+        .checkbox-grid input[type="checkbox"] {
+            width: 10px !important;
+            height: 10px !important;
+            margin: 0 !important;
+            flex-shrink: 0;
+        }
+
+        input[type="checkbox"] {
+            all: unset;
+            appearance: auto;
+            width: 10px !important;
+            height: 10px !important;
+            margin: 0 !important;
+            vertical-align: middle;
+        }
+
+
     </style>
 
 </head>
@@ -197,17 +243,37 @@
         <!-- 소재지 입력창 -->
         <div class="form-group">
             <label for="user_location">소재지</label>
-            <input
-                    id="user_location"
-                    name="user_location"
-                    placeholder="ex) 서울특별시, 인천광역시, 경기도 광명시"
-                    requiredtype="text"/>
+            <select id="user_location" name="user_location" required>
+                <option disabled selected value="">--소재지를 입력하세요--</option>
+                <!-- 1~30년 선택 옵션 -->
+                <option value="서울">서울특별시</option>
+                <option value="부산">부산광역시</option>
+                <option value="대구">대구광역시</option>
+                <option value="인천">인천광역시</option>
+                <option value="광주">광주광역시</option>
+                <option value="대전">대전광역시</option>
+                <option value="울산">울산광역시</option>
+                <option value="세종">세종특별자치시</option>
+                <option value="경기">경기도</option>
+                <option value="강원">강원특별자치도</option>
+                <option value="충북">충청북도</option>
+                <option value="충남">충청남도</option>
+                <option value="전북">전라북도</option>
+                <option value="경북">경상북도</option>
+                <option value="제주">제주특별자치도</option>
+            </select>
         </div>
 
-        <!-- 회사 업력?-->
+        <!-- 설립일 입력 (사용자 입력) -->
+        <div class="form-group">
+            <label for="start_date">설립일</label>
+            <input id="start_date" name="start_date" placeholder="YYYY-MM" required/>
+        </div>
+
+        <!-- 회사 업력-->
         <div class="form-group">
             <label for="user_years">업력(년)</label>
-            <input id="user_years" name="user_years" placeholder="숫자로 입력하세요 ex) 3" required type="text"/>
+            <input id="user_years" name="user_years" placeholder="자동으로 계산됩니다." readonly required type="text"/>
         </div>
 
 
@@ -237,6 +303,44 @@
                 <option value="50-100">50억 ~ 100억 원</option>
                 <option value="100+">100억 원 이상</option>
             </select>
+        </div>
+
+        <!-- 업종 선택 -->
+        <div class="form-group">
+            <label for="user_industry">업종</label>
+            <select id="user_industry" name="user_industry" required>
+                <option value="">-- 업종 선택 --</option>
+                <option value="제조업">제조업</option>
+                <option value="정보통신업">정보통신업</option>
+                <option value="건설업">건설업</option>
+                <option value="도소매업">도소매업</option>
+                <option value="서비스업">서비스업</option>
+                <option value="교육/연구">교육/연구</option>
+                <option value="금융">금융</option>
+                <option value="기타">기타</option>
+            </select>
+        </div>
+
+        <!-- 기업 유형 선택 -->
+        <div class="form-group">
+            <label>기업 유형</label>
+            <div class="checkbox-grid">
+                <label><input name="user_type" type="checkbox" value="개인사업자"> 개인사업자</label>
+                <label><input name="user_type" type="checkbox" value="비영리법인"> 비영리법인</label>
+                <label><input name="user_type" type="checkbox" value="법인기업"> 법인기업</label>
+                <label><input name="user_type" type="checkbox" value="소상공인"> 소상공인</label>
+                <label><input name="user_type" type="checkbox" value="협동조합"> 협동조합</label>
+                <label><input name="user_type" type="checkbox" value="프리랜서"> 프리랜서 사업자</label>
+                <label><input name="user_type" type="checkbox" value="소셜벤처"> 소셜벤처</label>
+                <label><input name="user_type" type="checkbox" value="벤처기업"> 벤처기업</label>
+                <label><input name="user_type" type="checkbox" value="중소기업"> 중소기업</label>
+                <label><input name="user_type" type="checkbox" value="스타트업"> 스타트업</label>
+                <label><input name="user_type" type="checkbox" value="사회적기업"> 사회적기업</label>
+                <label><input name="user_type" type="checkbox" value="장애인기업"> 장애인기업</label>
+                <label><input name="user_type" type="checkbox" value="중장년기업"> 중장년기업</label>
+                <label><input name="user_type" type="checkbox" value="청년기업"> 청년기업</label>
+                <label><input name="user_type" type="checkbox" value="여성기업"> 여성기업</label>
+            </div>
         </div>
 
         <button type="submit">회원가입</button>

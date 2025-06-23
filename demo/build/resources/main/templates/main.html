@@ -14,7 +14,6 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
             "Noto Sans KR", sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             height: 100vh;
             overflow: hidden;
         }
@@ -77,17 +76,25 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            background: white;
+            padding-left: 10px; /* 사이드바와의 간격을 적절히 줄임 */
         }
 
         .chat-header {
-            padding: 20px 30px;
-            background: 'linear-gradient(180deg, #2c3e50 0%, #34495e 100%)',
-            color: #667eea !important;
+            padding: 25px 20px;
+            position: relative;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .chat-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 10px;
+            right: 10px;
+            height: 1px; /* ✅ 굵기를 조절하는 부분 (1px → 2px 이상으로 조정) */
+            background-color: #e0e0e0; /* 색상도 원하면 바꿀 수 있음 */
         }
 
         #chatTitle {
@@ -111,7 +118,7 @@
 
         .messages {
             flex: 1;
-            padding: 30px;
+            padding: 10px;
             overflow-y: auto;
             color: #fff;
             display: flex;
@@ -126,6 +133,7 @@
             padding: 10px 15px;
             border-radius: 18px;
             animation: fadeInUp 0.3s ease;
+            white-space: pre-line;
         }
 
         /* 봇 메시지 */
@@ -142,38 +150,33 @@
             align-self: flex-end;
             background: #f3f4f6 !important;
             color: rgba(0, 0, 0, 0.85) !important;
+            white-space: pre-line;
         }
 
         .input-area {
-            padding: 25px 30px;
+            position: relative;
+            padding: 20px 10px;
             background: white;
-            border-top: 1px solid #e0e0e0;
             display: flex;
-            gap: 15px;
-            align-items: flex-end;
+            align-items: center;
+            border-top: none; /* 기존 선 제거 */
         }
 
         #userInput {
-            /* 가로 비율도 더 키우고 싶으면 flex 값을 조정하세요 */
-            flex: 2;
-
-            /* 위·아래 40px, 좌·우 20px 패딩 */
-            padding: 25px 30px;
-
+            flex: 1;
+            padding: 25px 60px 25px 30px; /* 우측 버튼 영역 확보 */
             border: 2px solid #e0e0e0;
             border-radius: 25px;
             font-size: 16px;
             line-height: 20px;
             resize: none;
             overflow-y: hidden;
-
-            /* 최소 높이 = 20px + (40px * 2) = 100px */
             min-height: 100px;
-            /* 최대 높이 = (20px * 4) + (40px * 2) = 160px */
             max-height: 160px;
-
             background: #f8f9fa;
             transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+
         }
 
 
@@ -190,6 +193,10 @@
         }
 
         #sendBtn {
+            position: absolute;
+            right: 45px; /* padding과 조화롭게 조정 */
+            top: 50%;
+            transform: translateY(-50%);
             width: 50px;
             height: 50px;
             background: linear-gradient(45deg, #3498db, #2ecc71);
@@ -205,7 +212,7 @@
         }
 
         #sendBtn:hover {
-            transform: translateY(-2px) scale(1.05);
+            transform: translateY(-50%) scale(1.05);
             box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
         }
 
@@ -266,6 +273,11 @@
 
         .chat-item:hover {
             background: rgba(24, 42, 68, 1) !important;
+        }
+
+        /* ✅ 이 아래에 추가 */
+        .chat-item.active {
+            background: rgba(24, 42, 68, 1);
         }
 
         /* 모달 스타일 */
@@ -388,13 +400,17 @@
         }
 
         /* 스크롤바 스타일링 */
+        #userInput {
+            overflow-y: auto; /* 스크롤 활성화 상태를 명확히 지정 */
+        }
+
         #userInput::-webkit-scrollbar {
             width: 6px;
+            height: 50%; /* 스크롤바 길이 축소 설정 (필요하면 조정) */
         }
 
         #userInput::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 3px;
+            margin: 20px 0; /* 위아래로 여백을 줘서 입력창 내부에서 벗어나지 않게 설정 */
         }
 
         #userInput::-webkit-scrollbar-thumb {
@@ -406,8 +422,51 @@
             background: #a8a8a8;
         }
 
+        /* 카드 영역 */
+        .info-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            justify-content: space-between;
+        }
+
+        /* 개별 카드 스타일 */
+        .info-box {
+            flex: 1 1 calc(50% - 1.5rem);
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            min-width: 320px;
+        }
+
+        /* 아이콘 스타일 */
+        .info-icon {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+        }
+
+        /* 텍스트 스타일 */
+        .info-box span {
+            font-size: 0.95rem;
+            color: #333;
+            line-height: 1.4;
+        }
+
+        /* 모바일 대응 */
+        @media (max-width: 768px) {
+            .info-box {
+                flex: 1 1 100%;
+            }
+        }
 
     </style>
+
 </head>
 <body>
 <div class="wrapper">
@@ -420,13 +479,23 @@
 
     <div class="chat-area">
         <div class="chat-header" id="chatHeader">
-            <span id="chatTitle">새 채팅</span>
+            <span id="chatTitle">기업 맞춤형 정부지원 사원 추천 및 요약 챗 봇</span>
             <p class="logout-btn" id="logoutBtn">My page</p>
         </div>
 
 
         <div class="messages" id="messages">
-            <div class="message bot">안녕하세요! 무엇을 도와드릴까요?</div>
+            <div class="message bot">
+                안녕하세요!
+                우리 기업에 꼭 맞는 정부 지원사업,
+                복잡한 공고문 없이 쉽게 확인해보세요 😊
+
+                💬 어떤 걸 도와드릴까요?
+                “우리 회사에 맞는 지원사업 추천해줘”
+                “이번 달 마감하는 서울 제조업 사업 알려줘”
+                “청년디지털일자리 사업 자세히 알려줘”
+                👉 궁금하신 내용을 자유롭게 입력해 주세요!
+            </div>
         </div>
 
         <div class="input-area">

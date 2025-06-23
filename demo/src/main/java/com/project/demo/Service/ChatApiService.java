@@ -64,7 +64,12 @@ public class ChatApiService {
         userMeta.put("location", user.getUserLocation());
         userMeta.put("employees", user.getUserEmployees());
         userMeta.put("sales", user.getUserSalesRange());
+        userMeta.put("industry", user.getUserIndustry());
+
         request.put("userMeta", userMeta);
+
+        // ✅ 기업 유형 (List<String>)도 함께 전송
+        request.put("userTypes", user.getUserTypes());
 
         System.out.println(request);
 

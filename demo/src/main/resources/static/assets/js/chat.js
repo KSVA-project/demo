@@ -168,14 +168,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // [4] 채팅 선택 시 초기화 및 메시지 랜더링
     async function selectChat(title, croomIdx) {
-        const chatTitle = document.getElementById("chatTitle");
 
+        const chatTitle = document.getElementById("chatTitle");
         chatTitle.textContent = title; // 헤더에 채팅 제목 설정
         chatTitle.dataset.croomIdx = croomIdx; // ✅ 현재 채팅방 ID를 dataset으로 저장
         messages.innerHTML = "";  // 채팅방 비우기
-
-
         currentChatRoomIdx = croomIdx;
+
+        // 🔥 [호버 유지 효과: active 클래스 제어]
+        const chatItems = document.querySelectorAll(".chat-item");
+        chatItems.forEach(item => item.classList.remove("active")); // 기존 active 제거
+
+        const selectedItem = [...chatItems].find(item => item.dataset.croomIdx === String(croomIdx));
+        if (selectedItem) {
+            selectedItem.classList.add("active"); // 현재 선택한 항목에 active 추가
+        }
 
         // 채팅 내용이 없을 때 (새 채팅방)
         if (!croomIdx) {
@@ -323,28 +330,46 @@ document.addEventListener("DOMContentLoaded", () => {
                     loadingMessage.appendChild(currentParagraph);
                 }
 
-                // 현재 위치에서 <br> 태그가 시작되는 경우 처리
+                // [1] 현재 위치에서 <br> 태그가 시작되는 경우 처리
                 if (paragraphHtml.slice(charIndex).startsWith("<br>")) {
                     currentParagraph.appendChild(document.createElement("br"));
                     charIndex += 4; // "<br>"  4글자 길이
                     setTimeout(typeNextChar, 20);   // 다음 타이핑 재귀 예약
 
-                    //현재 위치에서 <br/> 태그가 시작되는 경우 처리
-                } else if (paragraphHtml.slice(charIndex).startsWith("<br/>")) {
+                }
+                // [2] 현재 위치에서 <br/> 태그가 시작되는 경우 처리
+                if (paragraphHtml.slice(charIndex).startsWith("<br/>")) {
                     currentParagraph.appendChild(document.createElement("br"));
                     charIndex += 5; // "<br/>" 5글자 길이만큼  인덱스 이동
                     setTimeout(typeNextChar, 20);
 
-                } else {
-                    // 일반 문자 출력
-                    const char = paragraphHtml[charIndex]; // 현재 출력할 문자 가져오기
-
-                    // 공백 문자는 "&nbsp;"로 변환해서 브라우저에서 무시되지 않도록 처리
-                    currentParagraph.innerHTML += char === " " ? "&nbsp;" : char;
-                    charIndex++;
-                    messages.scrollTop = messages.scrollHeight;
-                    setTimeout(typeNextChar, 20);
                 }
+
+                // 3. <a> 태그 처리
+                if (paragraphHtml.slice(charIndex).startsWith("<a ")) {
+                    const endIdx = paragraphHtml.indexOf("</a>", charIndex);
+                    if (endIdx !== -1) {
+                        const linkHtml = paragraphHtml.slice(charIndex, endIdx + 4); // "</a>" 포함
+                        const temp = document.createElement("div");
+                        temp.innerHTML = linkHtml;
+                        const linkNode = temp.firstChild;
+                        currentParagraph.appendChild(linkNode);
+                        charIndex = endIdx + 4;
+                        messages.scrollTop = messages.scrollHeight;
+                        setTimeout(typeNextChar, 20);
+                        return;
+                    }
+                }
+
+                // 일반 문자 출력
+                const char = paragraphHtml[charIndex]; // 현재 출력할 문자 가져오기
+
+                // 공백 문자는 "&nbsp;"로 변환해서 브라우저에서 무시되지 않도록 처리
+                currentParagraph.innerHTML += char === " " ? "&nbsp;" : char;
+                charIndex++;
+                messages.scrollTop = messages.scrollHeight;
+                setTimeout(typeNextChar, 20);
+
 
                 // 문단 끝나면 다음으로
                 if (charIndex >= paragraphHtml.length) {

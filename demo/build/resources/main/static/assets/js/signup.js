@@ -1,5 +1,34 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+
+    // ✅ [1] Flatpickr: 설립일 → 업력 자동계산
+    flatpickr("#start_date", {
+        locale: "ko",  // 한글화
+        dateFormat: "Y-m",
+        altInput: true,
+        altFormat: "Y년 m월",
+        plugins: [
+            new monthSelectPlugin({
+                shorthand: false,
+                dateFormat: "Y-m",
+                altFormat: "Y년 m월"
+            })
+        ],
+        onChange: function (selectedDates, dateStr) { // 사용자가 날짜를 선택하면 실행
+
+            const [year, month] = dateStr.split('-').map(Number);
+
+            // JavaScript의 Date 객체는 월(month)이 0부터 시작
+            const startDate = new Date(year, month - 1);
+            const today = new Date();
+
+            let years = today.getFullYear() - startDate.getFullYear();
+            if (today.getMonth() < startDate.getMonth()) years--; // 월 단위 보정:
+
+            document.getElementById("user_years").value = years >= 0 ? years : 0;
+        }
+    });
+
     // 이메일 중복체크
     const checkEmailBtn = document.getElementById("checkEmailBtn");
     const emailInput = document.getElementById("email");
@@ -53,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
 
 
-// 1. 회원 가입 이벤트 핸들러 등록
+// [3] 회원 가입 제출 이벤트
     let submit = document.getElementById("signupForm");
 
     submit.addEventListener("submit", function (e) {
@@ -75,6 +104,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const userSales = document.getElementById("user_sales").value; // 매출액
         const userYears = document.getElementById("user_years").value // 회사 업력
 
+        const userIndustry = document.getElementById("user_industry").value;
+
+        // 체크된 기업 유형들 수집
+        const typeNodes = document.querySelectorAll('input[name="user_type"]:checked');
+        const userTypes = Array.from(typeNodes).map(input => input.value);
+
         // 에러처리
         const passwordError = document.getElementById("passwordError");
 
@@ -86,6 +121,11 @@ document.addEventListener("DOMContentLoaded", () => {
             passwordError.style.display = "none";
         }
 
+        // 설립일 입력 안 했을 경우 대비 (업력 계산 안됨)
+        if (!userYears) {
+            alert("설립일을 선택하여 업력을 계산해주세요.");
+            return;
+        }
 
         // back-end 서버에 회원가입 정보 전송
         fetch("/signup", {
@@ -100,7 +140,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 userLocation: location,
                 userYears: userYears,
                 userEmployees: employeeCount,
-                userSalesRange: userSales
+                userSalesRange: userSales,
+                userIndustry: userIndustry,
+                userTypes: userTypes
             }),
         })
             .then((response) => {

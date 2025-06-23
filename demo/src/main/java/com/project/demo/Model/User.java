@@ -1,9 +1,8 @@
 package com.project.demo.Model;
 
-
+import com.project.demo.converter.StringListJsonConverter;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,7 +14,7 @@ import java.util.List;
 @Setter
 public class User {
 
-     @Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_idx")
     private Integer userIdx;
@@ -40,6 +39,13 @@ public class User {
 
     @Column(name = "user_sales_range", length = 30)
     private String userSalesRange; // 연매출 범위 문자열 (예: "5~10억")
+
+    @Column(name = "user_industry", length = 100)
+    private String userIndustry; // 업종
+
+    @Column(name = "user_types", columnDefinition = "json")
+    @Convert(converter = StringListJsonConverter.class)
+    private List<String> userTypes; // 기업 유형 (다중 선택)
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
