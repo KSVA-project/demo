@@ -46,6 +46,8 @@ public class User {
     @Column(name = "user_types", columnDefinition = "json")
     @Convert(converter = StringListJsonConverter.class)
     private List<String> userTypes; // 기업 유형 (다중 선택)
+    // convert-특정 필드 변환기를 통해 DB와 매핑하라 어노테이션
+
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();

@@ -42,7 +42,6 @@ public class UserRestController {
         }
     }
 
-
     // 회원 가입
     @PostMapping("/signup")
     public Boolean signUp(@RequestBody User user) {

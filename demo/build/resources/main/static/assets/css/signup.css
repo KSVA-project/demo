@@ -1,0 +1,399 @@
+/* 전체 페이지의 기본 스타일 설정 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* height에서 min-height로 변경 */
+    margin: 0;
+    padding: 20px; /* 여백 추가 */
+    box-sizing: border-box;
+}
+
+.container {
+    background: #fff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 420px; /* 최대 너비 설정 */
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 22px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.form-group label {
+    font-weight: normal;
+    font-size: 14px;
+    min-width: 90px;
+    margin-right: 10px;
+}
+
+label[for="email"] {
+    margin-bottom: 1.5rem;
+}
+
+.form-group input,
+.form-group select {
+    flex: 1;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    height: 36px;
+}
+
+.email-inline {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+/* 중복확인 버튼 */
+#checkEmailBtn {
+    align-self: flex-end;
+    margin-top: 4px;
+    color: #007bff;
+    font-size: 0.9em;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+#checkEmailBtn:hover {
+    background-color: #f0f8ff;
+}
+
+/* 에러 메시지 */
+.error {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
+    display: none;
+}
+
+/* 버튼 스타일 */
+button {
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(45deg, #3498db, #2ecc71);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 15px;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* 로그인 링크 */
+.link {
+    text-align: center;
+    margin-top: 12px;
+}
+
+.link a {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 0.9em;
+}
+
+.link a:hover {
+    text-decoration: underline;
+}
+
+/* 드롭다운 화살표 포함 select 스타일 */
+.form-group select {
+    appearance: none;
+    background-color: #fff;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.41.59L6 5.17l4.59-4.58L12 2l-6 6-6-6z' fill='%23333'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* 포커스 효과 */
+input:focus,
+select:focus {
+    outline: none;
+    border-color: #5b9bd5;
+    box-shadow: 0 0 0 3px rgba(91, 155, 213, 0.2);
+}
+
+/* 이메일 중복확인 에러 메시지 */
+.email-error-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+#emailError {
+    font-size: 0.85em;
+    display: none;
+    white-space: nowrap;
+}
+
+h2 {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.checkbox-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px 4px;
+    padding: 0;
+}
+
+.checkbox-grid label {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    gap: 4px;
+    white-space: nowrap;
+    line-height: 1.2;
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.checkbox-grid input[type="checkbox"] {
+    width: 10px !important;
+    height: 10px !important;
+    margin: 0 !important;
+    flex-shrink: 0;
+}
+
+input[type="checkbox"] {
+    all: unset;
+    appearance: auto;
+    width: 10px !important;
+    height: 10px !important;
+    margin: 0 !important;
+    vertical-align: middle;
+}
+
+/* =============================================== */
+/* 🎯 반응형 디자인 - 태블릿 크기 (768px 이하) */
+/* =============================================== */
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+        align-items: flex-start; /* 상단 정렬로 변경 */
+    }
+
+    .container {
+        max-width: 100%;
+        width: 100%;
+        padding: 20px;
+        margin: 0;
+        max-height: none; /* 높이 제한 해제 */
+    }
+
+    .container h2 {
+        font-size: 20px;
+        margin-bottom: 18px;
+    }
+
+    .form-group {
+        flex-direction: column; /* 세로 배치로 변경 */
+        align-items: stretch;
+        margin-bottom: 18px;
+    }
+
+    .form-group label {
+        min-width: auto;
+        margin-right: 0;
+        margin-bottom: 6px;
+        font-size: 14px;
+        text-align: left;
+    }
+
+    .form-group input,
+    .form-group select {
+        width: 100%;
+        height: 40px; /* 터치하기 쉽게 높이 증가 */
+        font-size: 16px; /* iOS 줌 방지 */
+        padding: 10px;
+    }
+
+    /* 이메일 그룹 특별 처리 */
+    .email-inline {
+        width: 100%;
+    }
+
+    .email-error-line {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 4px;
+    }
+
+    #checkEmailBtn {
+        align-self: flex-end;
+        font-size: 14px;
+        padding: 4px 8px;
+    }
+
+    /* 체크박스 그리드 - 2열로 변경 */
+    .checkbox-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px 6px;
+    }
+
+    .checkbox-grid label {
+        font-size: 13px;
+        gap: 6px;
+    }
+
+    button {
+        height: 45px; /* 버튼 높이 증가 */
+        font-size: 16px;
+        margin-top: 15px;
+    }
+}
+
+/* =============================================== */
+/* 📱 반응형 디자인 - 모바일 크기 (480px 이하) */
+/* =============================================== */
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        padding: 15px;
+        border-radius: 0; /* 모바일에서는 모서리 직각 */
+        box-shadow: none; /* 그림자 제거 */
+        min-height: calc(100vh - 20px); /* 거의 전체 화면 */
+    }
+
+    .container h2 {
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        font-size: 13px;
+        margin-bottom: 5px;
+    }
+
+    .form-group input,
+    .form-group select {
+        height: 44px; /* 더 큰 터치 영역 */
+        font-size: 16px;
+        padding: 12px;
+    }
+
+    /* 체크박스 그리드 - 1열로 변경 */
+    .checkbox-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .checkbox-grid label {
+        font-size: 14px;
+        gap: 8px;
+        justify-content: flex-start;
+    }
+
+    .checkbox-grid input[type="checkbox"] {
+        width: 14px !important;
+        height: 14px !important;
+    }
+
+    button {
+        height: 50px;
+        font-size: 17px;
+        margin-top: 20px;
+    }
+
+    .link {
+        margin-top: 15px;
+    }
+
+    .link a {
+        font-size: 14px;
+    }
+
+    /* 에러 메시지 조정 */
+    .error {
+        font-size: 12px;
+    }
+
+    #emailError {
+        font-size: 12px;
+        white-space: normal; /* 줄바꿈 허용 */
+    }
+}
+
+/* =============================================== */
+/* 🔥 초소형 화면 (360px 이하) */
+/* =============================================== */
+@media (max-width: 360px) {
+    .container {
+        padding: 12px;
+    }
+
+    .container h2 {
+        font-size: 16px;
+    }
+
+    .form-group label {
+        font-size: 12px;
+    }
+
+    .checkbox-grid label {
+        font-size: 12px;
+    }
+
+    button {
+        font-size: 15px;
+    }
+}
+
+/* =============================================== */
+/* 🌐 가로 모드 지원 (모바일 landscape) */
+/* =============================================== */
+@media (max-height: 600px) and (orientation: landscape) {
+    body {
+        align-items: flex-start;
+        padding: 10px;
+    }
+
+    .container {
+        max-height: none;
+        margin: 0;
+    }
+
+    .form-group {
+        margin-bottom: 12px;
+    }
+
+    .checkbox-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px 4px;
+    }
+}

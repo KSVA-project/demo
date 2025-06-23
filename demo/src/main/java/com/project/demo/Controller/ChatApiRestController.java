@@ -24,6 +24,7 @@ public class ChatApiRestController {
         try {
             Map<String, Object> botReply = chatApiService.sendAndSave(chat);
             return ResponseEntity.ok(botReply);
+
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body("FastAPI 통신 중 오류 발생");

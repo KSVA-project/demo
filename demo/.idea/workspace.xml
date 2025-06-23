@@ -5,12 +5,46 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0f6caa9a-4631-4ff2-b709-a5ffddba5b06" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/assets/css/login.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/assets/css/signup.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.14/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.14/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.14/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.14/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.14/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../python/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../python/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../python/crawling.py" beforeDir="false" afterPath="$PROJECT_DIR$/../python/crawling.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/project/demo/Controller/MainController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/project/demo/Controller/MainController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/project/demo/Controller/UserRestController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/project/demo/Controller/UserRestController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/project/demo/Model/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/project/demo/Model/User.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/project/demo/converter/StringListJsonConverter$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/project/demo/converter/StringListJsonConverter$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/project/demo/converter/StringListJsonConverter.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/project/demo/converter/StringListJsonConverter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/application-live.properties" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/application-live.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/application-local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/application-local.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/static/assets/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/static/assets/css/main.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/static/assets/js/chat.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/static/assets/js/chat.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/main.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/signup.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/signup.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/ChatApiRestController.class.uniqueId1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/ChatApiService.class.uniqueId0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/demo/Controller/ChatApiRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/demo/Controller/ChatApiRestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/demo/Controller/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/demo/Controller/MainController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/demo/Controller/UserRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/demo/Controller/UserRestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/demo/Model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/demo/Model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/demo/converter/StringListJsonConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/demo/converter/StringListJsonConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application-live.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application-live.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application-local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application-local.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/assets/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/assets/css/main.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/assets/js/chat.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/assets/js/chat.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/main.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/signup.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/signup.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../python/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../python/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../python/ocrtest-463407-1f76b5e3551f.json" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,8 +90,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
+        <option value="CSS File" />
       </list>
     </option>
   </component>
@@ -102,6 +137,7 @@
     "Spring Boot.DemoApplication.executor": "Run",
     "git-widget-placeholder": "master",
     "last_opened_file_path": "C:/Users/USER/git/ragProject/demo",
+    "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -210,7 +246,7 @@
       <workItem from="1750518172627" duration="275000" />
       <workItem from="1750571276598" duration="20000" />
       <workItem from="1750594058870" duration="761000" />
-      <workItem from="1750636911539" duration="2307000" />
+      <workItem from="1750636911539" duration="19511000" />
     </task>
     <servers />
   </component>

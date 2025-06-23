@@ -1,5 +1,5 @@
 # MMR Retriever 적용
-# 임베딩 모델 : OpenAIEmbeddings
+# 임베딩 모델 : HuggingFaceEmbeddings
 
 # ✅ FastAPI 관련
 from fastapi import FastAPI, HTTPException
@@ -38,6 +38,20 @@ from service import run_service
 # ✅ 환경 변수 로드
 from dotenv import load_dotenv
 
+# device 확인
+import torch
+def get_device():
+    """GPU 사용 가능 여부를 확인하고 적절한 device 반환"""
+    if torch.cuda.is_available():
+        device = 'cuda'
+        gpu_count = torch.cuda.device_count()
+        gpu_name = torch.cuda.get_device_name(0)
+        print(f"✅ GPU 사용 가능: {gpu_name} ({gpu_count}개)")
+    else:
+        device = 'cpu'
+        print("⚠️ GPU 불가능, CPU 사용")
+    return device
+
 load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
 
@@ -47,7 +61,7 @@ logger = logging.getLogger(__name__)
 
 # LangChain 체인 (전역 변수)
 chain = None
-classifier_chain = None
+classifier_chain_instance = None 
 
 # 요청 데이터 모델
 class ChatRequest(BaseModel):
@@ -58,7 +72,6 @@ class ChatRequest(BaseModel):
     createdAt: datetime = Field(default_factory=datetime.now)
     userMeta: Dict[str, Optional[str]] # 사용자 메타데이터 필드
     userTypes: List[str] = Field(default=[]) # 추가: 기업 유형 리스트
-
 
 def scheduled_job():
     logger.info("🕒 APScheduler: run_crawling + run_service 실행 시작")
@@ -73,21 +86,22 @@ def scheduled_job():
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     global chain
-    global classifier_chain
+    global classifier_chain_instance
     logger.info("🚀 FastAPI 서버 시작 - LangChain 초기화 중...")
     
     try:
         chain = create_chain()
         logger.info("✅ LangChain 초기화 완료!")
         logger.info(f"✅ 현재 체인 타입: {type(chain)}")
-        logger.info(f"✅ 체인 구성: {chain}")
-        classifier_chain = classifier_chain()
+        
+        classifier_chain_instance = create_classifier_chain()  # ❌ 수정: 함수명 변경
         logger.info("✅ classifier_chain 초기화 완료!")
-        logger.info(f"✅ 현재 체인 타입: {type(classifier_chain)}")
+        logger.info(f"✅ 현재 분류 체인 타입: {type(classifier_chain_instance)}")
         
     except Exception as e:
         logger.error(f"❌ LangChain 초기화 실패: {e}")
         chain = None
+        classifier_chain_instance = None
     
     # ✅ APScheduler 작업 시작
     scheduler = AsyncIOScheduler()
@@ -112,16 +126,46 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# 체인에서 사용자 정보 검증 함수
+def validate_user_info(user_meta):
+    """사용자 정보가 충분한지 검증"""
+    required_fields = ["name", "industry", "employees", "location"]
+    missing_fields = [field for field in required_fields if not user_meta.get(field)]
+    
+    if missing_fields:
+        logger.warning(f"⚠️ 누락된 사용자 정보: {missing_fields}")
+        return False, missing_fields
+    return True, []
+
 @app.post("/chat")
 async def chat(request: ChatRequest):
     """LangChain을 사용한 문서 기반 검색 + 답변 생성"""
-    global chain
+    global chain, classifier_chain_instance
     
-    if chain is None:
+    if chain is None or classifier_chain_instance is None:
         raise HTTPException(status_code=500, detail="LangChain이 초기화되지 않았습니다.")
 
     try:
         logger.info(f"📥 요청 수신: {request.message}")
+        logger.info(f"🏢 회사 정보: {request.userMeta}")
+        logger.info(f"🎯 기업 유형: {request.userTypes}")
+
+        # ✅ 추가: 사용자 정보 검증
+        is_valid, missing_fields = validate_user_info(request.userMeta)
+        if not is_valid:
+            return {
+                "response": f"더 정확한 추천을 위해 다음 정보를 추가로 입력해주세요: {', '.join(missing_fields)}",
+                "missing_fields": missing_fields,
+                "croomIdx": request.croomIdx,
+                "chatter": request.chatter,
+                "ratings": request.ratings,
+                "createdAt": request.createdAt
+            }
+
+        # Step 1: 질문 분류
+        mode = await asyncio.to_thread(classifier_chain_instance.invoke, {"question": request.message})
+        mode = mode.strip().lower()
+        logger.info(f"🧠 분류된 모드: {mode}")
 
         payload = {
             "question": request.message,
@@ -130,23 +174,18 @@ async def chat(request: ChatRequest):
             "user_location": request.userMeta.get("location", ""),
             "user_employees": request.userMeta.get("employees", ""),
             "user_sales": request.userMeta.get("sales", ""),
-            "user_industry": request.userMeta.get("industry", ""),      # 업종 
-            "user_types": ", ".join(request.userTypes) 
+            "user_industry": request.userMeta.get("industry", ""),
+            "user_types": ", ".join(request.userTypes),
+            "mode": mode
         }
         
         logger.info(f"🧪 invoke payload: {payload}")
-
-        # Step 1: 질문 분류
-        mode = await asyncio.to_thread(classifier_chain.invoke, {"question": request.message})
-        mode = mode.strip().lower()
-        payload["mode"] = mode
-        logger.info(f"🧠 분류된 모드: {mode}")
         
         # 비동기 실행
         response = await asyncio.to_thread(chain.invoke, payload)
         
-        logger.info(f"🔎 response type: {type(response)}", extra={"flush": True})
-        logger.info(f"🔎 response raw: {response}", extra={"flush": True})
+        logger.info(f"🔎 response type: {type(response)}")
+        logger.info(f"🔎 response raw: {response}")
         
         # 반환 형태가 복잡한 체인일수록 dict로 응답
         # [줄바꿈 가공]
@@ -173,10 +212,12 @@ async def chat(request: ChatRequest):
 def create_chain():
     """Create and return the LangChain chain with RAG, including document title."""
     try:
+        device = get_device()
+        
         # Initialize embeddings model
         embeddings_model = HuggingFaceEmbeddings(
             model_name='jhgan/ko-sroberta-nli',
-            model_kwargs={'device': 'cpu'},  # GPU 사용 시 'cuda'로 변경
+            model_kwargs={'device': device},  # GPU 사용 시 'cuda'로 변경
             encode_kwargs={'normalize_embeddings': True},
         )
         logger.info("✅ Embeddings model initialized.")
@@ -208,79 +249,142 @@ def create_chain():
             }
         )
 
-        # Define prompt
+        # 모드별 세부 지침을 동적으로 생성하는 함수 - 자세한 정보 제공 버전
+        def get_mode_instructions(mode_value):
+            if mode_value == "recommend":
+                return """
+                🎯 추천 모드 수행사항:
+                
+                1. 회사 프로필 분석부터 시작:
+                   - 해당 기업의 특성을 명시적으로 언급하고 분석
+                   - 해당 기업의 업종과 규모에 특화된 지원사업 필요성 분석
+                   - 기업의 성장 단계와 현재 상황에 맞는 지원 필요성 설명
+                
+                2. 맞춤 추천 제공:
+                   - 검색된 각 지원사업이 이 회사에 왜 적합한지 구체적 매칭 근거 제시
+                   - 기업 규모, 연매출, 업종과의 연관성 상세 설명
+                   - 지역 기반 지원사업이 있다면 우선 추천하고 지역적 장점 설명
+                   - 신청 가능성과 경쟁률, 선정 가능성까지 고려한 추천
+                
+                3. 각 프로그램별 상세 정보 (반드시 모든 항목을 자세히 설명):
+                   - 사업명 (pblancNm): "[사업명]" - 사업의 목적과 배경까지 설명
+                   - 📅 신청기간 (reqstBeginEndDe): "[기간]" - 신청 마감일까지 남은 시간과 준비 기간 안내
+                   - 📋 사업개요 (bsnsSumryCn): 
+                     * 사업의 전체적인 목표와 방향성
+                     * 지원 내용의 구체적인 범위와 한계
+                     * 예상되는 성과와 기대 효과
+                     * 사업 참여 시 얻을 수 있는 혜택들을 구체적으로 나열
+                   - 🎯 대상 (trgetNm): "[대상]" - 우리 회사가 해당 대상에 포함되는 이유와 자격 요건 분석
+                   -  지원 규모: 문서에서 찾을 수 있는 지원금액, 지원 비율, 지원 방식 등 상세 정보
+                   -  신청 절차: 필요한 서류, 심사 과정, 선정 기준 등 실무적 정보
+                   -  주의사항: 신청 시 유의할 점, 제외 대상, 의무사항 등
+                   -  링크* [전체URL]
+                
+                4. 우선순위 정렬 및 상세 분석:
+                   - 가장 적합한 프로그램부터 순서대로 제시
+                   - 각각에 대해 이 회사에 적합한 이유를 구체적으로 설명
+                   - 신청 난이도와 성공 가능성 평가
+                   - 동시 신청 가능한 프로그램들의 조합 제안
+                """
+            else:  # summarize
+                return """
+                📊 요약 모드 수행사항:
+                
+                1. 회사 맥락에서의 상세 요약:
+                   - 일반적 요약이 아닌, 해당 업종 기업 관점에서 상세 요약
+                   - 해당 규모 기업이 활용할 수 있는 모든 관점과 가능성 분석
+                   - 비슷한 규모/업종 기업의 활용 사례나 성공 패턴 언급 (문서에 있다면)
+                
+                2. 핵심 정보 상세 구조화:
+                   -  **사업명 (pblancNm)**: "[사업명]" - 사업명의 의미와 배경 설명
+                   -  **신청기간 (reqstBeginEndDe)**: "[기간]" - 신청 일정과 관련 중요 날짜들
+                   -  **사업개요 (bsnsSumryCn)**: 
+                     * 사업의 전체 목표와 추진 배경
+                     * 지원 내용의 상세 범위 (자금지원, 멘토링, 교육, 네트워킹 등)
+                     * 사업 기간과 단계별 진행 과정
+                     * 참여 기업이 얻게 되는 구체적 혜택들
+                     * 의무사항과 조건들
+                   -  대상 (trgetNm): "[대상]" - 대상 조건의 상세 분석과 우리 회사 적합성
+                   -  지원 조건: 지원금액, 지원 비율, 매칭펀드 여부 등 재정적 조건
+                   -  신청 요건: 필요 서류, 자격 조건, 제출 방법 등
+                   -  심사 기준: 평가 항목, 가점 요소, 우대 조건 등
+                   -  링크: [전체URL]
+                
+                3. 실용적 상세 분석:
+                   - 지원 규모, 조건, 절차 등 모든 핵심 실무 정보
+                   - 이 회사가 지원 가능한지 여부를 판단할 수 있는 모든 정보 제공
+                   - 신청 전 준비해야 할 사항들과 소요 시간 예상
+                   - 선정 후 진행 과정과 기대할 수 있는 결과물
+                   - 다른 지원사업과의 중복 지원 가능 여부
+                """
+
+        # 개선된 프롬프트 - 사용자 정보 활용 강화
+         # 개선된 프롬프트 - 더욱 자세한 정보 제공
         prompt = PromptTemplate.from_template(
             """
-            You are an AI assistant that supports government program analysis for companies.
-            The user's intent has been classified as: {mode}
+            당신은 정부지원사업 전문 AI 컨설턴트입니다. 
+            사용자의 질문 유형: {mode}
             
-            If the mode is `recommend`, follow these instructions:
-
-            - Recommend the most relevant government support programs for the company using the retrieved documents and the company's profile.
-            - Use the following metadata fields (if present) to construct complete Korean sentences:
-            - Program Name (pblancNm)
-            - Application Period (reqstBeginEndDe)
-            - Business Overview Contents (bsnsSumryCn)
-            - Target Audience (trgetNm)
-            - Program URL (pblancUrl)
-            - Include key details from `page_content` such as eligibility, scope, funding, or specific support terms.
-            - Do not skip any available metadata fields. Write them out in full sentences.
-            - If no relevant programs are found, say so clearly. Otherwise, do not mention this.
-            - At the end of each program, show the full URL prefixed with 👉. If `pblancUrl` is a relative path (e.g., starts with `/web/...`), prepend `https://www.bizinfo.go.kr`.
-
-            If the mode is `summarize`, follow these instructions:
-
-            - Provide a summary of the support programs found in the documents, regardless of company information.
-            - Focus on condensing the key content from `page_content`, including funding, purpose, and eligibility.
-            - Do not include user metadata or match recommendations.
-            - You must include all available metadata fields (pblancNm, reqstBeginEndDe, bsnsSumryCn, trgetNm, pblancUrl) in full Korean sentences.
-            - End each program's summary with the full link prefixed by 👉, converting relative URLs as noted.
-
-            ---
-
-            [Company Information]
-            - Company Name: {user_name}
-            - Business Years: {user_years}
-            - Location: {user_location}
-            - Number of Employees: {user_employees}
-            - Annual Sales Range: {user_sales}
-            - Business Industry: {user_industry}
-            - Company Types: {user_types}    
+            반드시 아래 회사 정보를 상세히 분석하여 답변하세요:
             
-            [User Question]
+            🏢 분석할 회사 정보
+            - 회사명: {user_name}
+            - 사업 연수: {user_years}년 ← 이 업종을 반드시 고려하세요!
+            - 소재지: {user_location}   ← 이 소재지을 반드시 고려하세요!
+            - 직원 수: {user_employees}명
+            - 연매출 규모: {user_sales}
+            - 업종: {user_industry}
+            - 기업 유형: {user_types}
+            
+            📋 사용자 질문
             {question}
 
-            [Retrieved Support Program Documents]
+            ---
+            
+            '{mode}' 모드 수행 지침:
+            
+            {mode_instructions}
+            
+            📑 검색된 정부지원사업 문서:
             {context}
-
-            Respond in Korean.
+            
+            ⚠️ 중요 지침 (자세한 정보 제공):
+            1. 반드시 위 회사 정보를 기반으로 맞춤형 분석을 제공하되, 모든 정보를 상세히 설명하세요
+            2. 회사의 업종, 규모, 지역을 고려한 구체적 매칭 이유를 자세히 설명하세요
+            3. 일반적인 답변이 아닌, 해당 기업만을 위한 특화된 상세 답변을 하세요
+            4. 메타데이터의 모든 필드를 한국어로 완전한 문장으로 작성하되, 단순 나열이 아닌 설명형으로 작성하세요
+            5. 사업개요(bsnsSumryCn)는 특히 자세히 풀어서 설명하고, 실무진이 이해하기 쉽게 구체적으로 작성하세요
+            6. 지원 조건, 신청 방법, 심사 기준 등 실무에 필요한 모든 정보를 포함하세요
+            7. URL은 👉 마크와 함께 제공하고, 상대경로는 https://www.bizinfo.go.kr를 앞에 붙이세요
+            8. 각 지원사업에 대해 "왜 이 회사에 도움이 되는지"를 구체적으로 설명하세요
+            9. 신청 시 예상되는 경쟁률이나 선정 가능성도 언급하세요 (문서에 정보가 있다면)
+            10. 절대로 정보를 축약하거나 생략하지 말고, 문서에 있는 모든 유용한 정보를 포함하세요
+            
+            한국어로 자세하고 상세하게 답변하세요.
             """
         )
-       
+
         llm = ChatOpenAI(
             openai_api_key=api_key,
-            temperature=0.1,
+            temperature=0.0,
             model_name="gpt-3.5-turbo",
-            request_timeout=20,
+            request_timeout=30,
+            max_tokens=2000,
         )
 
         logger.info("✅ LangChain components initialized.")
 
-        # Runnable 체인의 조합, | 파이프 연산자를 써서 순차적으로 처리 ->  RunnableSequence
-        # 1. Input으로는 전체 dict이 들어와, question 값만 꺼냄
-        # 2. retriever: query 문자열을 받아서 chroma 벡터 DB에서 유사한 문서들을 검색 -> 결과는 List[Document] 객체
-        # 3. RunnableLambda(lambda docs: "\n\n".join([doc.page_content for doc in docs]))
-        #    retriever의 검색된 문서리스트 doc가 하나로 합쳐짐
-        
-        # 최종 전체 dict 입력 -> "question"만 추출 (query string) -> Chroma에서 관련 문서 검색
-        # -> 문서 내용만 꺼내서 하나로 합침 -> PromptTemplate에 전달될 context가 됨
+        # 체인 구성 시 모드별 지침을 동적으로 삽입
         chain = (
             {
                 "context": RunnableLambda(lambda x: x["question"]) 
                 | retriever 
                 | RunnableLambda(lambda docs: "\n\n".join([
-                    f"[📄 Metadata]\n{json.dumps({k: v for k, v in doc.metadata.items() if k!='file_hash'}, ensure_ascii=False, indent=2)}\n📑 Content:\n{doc.page_content}"
-                    for doc in docs
+                    f"📄 **문서 {i+1}**\n"
+                    f"📋 **메타데이터:**\n{json.dumps({k: v for k, v in doc.metadata.items() if k!='file_hash'}, ensure_ascii=False, indent=2)}\n\n"
+                    f"📑 **내용:**\n{doc.page_content}\n"
+                    f"{'='*50}"
+                    for i, doc in enumerate(docs)
                 ])),
                 "question": RunnablePassthrough(),
                 "user_name": RunnablePassthrough(),
@@ -291,51 +395,54 @@ def create_chain():
                 "user_industry": RunnablePassthrough(),   
                 "user_types": RunnablePassthrough(),
                 "mode": RunnablePassthrough(),
+                "mode_instructions": RunnableLambda(lambda x: get_mode_instructions(x.get("mode", "recommend")))
             }
             | prompt
             | llm
             | StrOutputParser()
         )
 
-        # RunnableLambda는 **MMR retriever가 반환한 문서들(List[Document])**
-        # json.dumps(..., ensure_ascii=False, indent=2) : meta를 json 문자열로 반환
-        # indent=2는 보기 좋게 들여쓰기
-
-        logger.info("🚀 LangChain RAG chain created successfully.")
-
+        logger.info("🚀 개선된 LangChain RAG chain 생성 완료")
         return chain
 
     except Exception as e:
-        logger.error(f"❌ Error creating LangChain chain with RAG: {e}")
-        raise RuntimeError("Failed to create LangChain chain with RAG")
+        logger.error(f"❌ Error creating improved LangChain chain: {e}")
+        raise RuntimeError("Failed to create improved LangChain chain")
 
 
-## 분류 체인
-def classifier_chain() :
-    
+# 개선된 분류 체인
+def create_classifier_chain():  # ❌ 수정: 함수명 변경
     classification_prompt = PromptTemplate.from_template(
-    """
-    다음 사용자의 질문을 읽고 아래 중 하나를 정확히 선택하세요:
+        """
+        다음 사용자 질문을 분석하여 정확한 모드를 선택하세요.
+        
+        **분류 기준:**
+        - `recommend`: 
+          * "추천해주세요", "적합한", "우리 회사에", "맞는", "찾아주세요" 등의 표현
+          * 회사 상황에 맞는 지원사업을 찾아달라는 요청
+          * 예: "우리 회사에 맞는 정부지원사업 추천해주세요"
+          
+        - `summarize`:
+          * "요약해주세요", "정리해주세요", "설명해주세요", "알려주세요" 등의 표현
+          * 특정 프로그램이나 일반적인 정보의 요약을 원하는 요청
+          * 예: "창업지원사업에 대해 설명해주세요"
 
-    - recommend: 우리 회사에 적합한 정부 지원사업을 추천해달라는 질문인 경우
-    - summarize: 특정 지원사업의 내용을 요약해달라는 질문인 경우
+        **중요:** 아래 단어 중 하나만 정확히 출력하세요.
+        - recommend
+        - summarize
 
-    반드시 위 단어 중 하나만 출력하세요. 그 외 문장이나 설명 없이 `recommend` 또는 `summarize` 중 하나로만 응답해야 합니다.
-
-    [질문]
-    {question}
-    """)
-            # 모델 인스턴스
+        질문: {question}
+        
+        답변:"""
+    )
+    
     llm = ChatOpenAI(
         openai_api_key=api_key,
-        temperature=0.0,  # 분류용은 변동성 제거!
+        temperature=0.0,
         model_name="gpt-3.5-turbo"
     )
 
-    # 분류 체인
-    classifier_chain = classification_prompt | llm | StrOutputParser()
-    
-    return classifier_chain
+    return classification_prompt | llm | StrOutputParser()
 
 
 if __name__ == "__main__":
