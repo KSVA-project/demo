@@ -21,7 +21,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 
 # ✅ Python 기본 라이브러리
 from datetime import datetime
-from typing import Dict, Optional
+from typing import Dict, Optional, List
 import asyncio
 import logging
 import os
@@ -47,6 +47,7 @@ logger = logging.getLogger(__name__)
 
 # LangChain 체인 (전역 변수)
 chain = None
+classifier_chain = None
 
 # 요청 데이터 모델
 class ChatRequest(BaseModel):
@@ -56,6 +57,7 @@ class ChatRequest(BaseModel):
     ratings: str = Field(default="5")
     createdAt: datetime = Field(default_factory=datetime.now)
     userMeta: Dict[str, Optional[str]] # 사용자 메타데이터 필드
+    userTypes: List[str] = Field(default=[]) # 추가: 기업 유형 리스트
 
 
 def scheduled_job():
@@ -71,6 +73,7 @@ def scheduled_job():
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     global chain
+    global classifier_chain
     logger.info("🚀 FastAPI 서버 시작 - LangChain 초기화 중...")
     
     try:
@@ -78,6 +81,9 @@ async def lifespan(app: FastAPI):
         logger.info("✅ LangChain 초기화 완료!")
         logger.info(f"✅ 현재 체인 타입: {type(chain)}")
         logger.info(f"✅ 체인 구성: {chain}")
+        classifier_chain = classifier_chain()
+        logger.info("✅ classifier_chain 초기화 완료!")
+        logger.info(f"✅ 현재 체인 타입: {type(classifier_chain)}")
         
     except Exception as e:
         logger.error(f"❌ LangChain 초기화 실패: {e}")
@@ -94,7 +100,6 @@ async def lifespan(app: FastAPI):
     
     yield
     logger.info("🛑 FastAPI 서버 종료...")
-
 
 # 🏁 FastAPI 인스턴스
 app = FastAPI(lifespan=lifespan)
@@ -124,12 +129,19 @@ async def chat(request: ChatRequest):
             "user_years": request.userMeta.get("years", ""),
             "user_location": request.userMeta.get("location", ""),
             "user_employees": request.userMeta.get("employees", ""),
-            "user_sales": request.userMeta.get("sales", "")
+            "user_sales": request.userMeta.get("sales", ""),
+            "user_industry": request.userMeta.get("industry", ""),      # 업종 
+            "user_types": ", ".join(request.userTypes) 
         }
         
         logger.info(f"🧪 invoke payload: {payload}")
 
-
+        # Step 1: 질문 분류
+        mode = await asyncio.to_thread(classifier_chain.invoke, {"question": request.message})
+        mode = mode.strip().lower()
+        payload["mode"] = mode
+        logger.info(f"🧠 분류된 모드: {mode}")
+        
         # 비동기 실행
         response = await asyncio.to_thread(chain.invoke, payload)
         
@@ -199,18 +211,32 @@ def create_chain():
         # Define prompt
         prompt = PromptTemplate.from_template(
             """
-            You are an AI assistant that recommends suitable government support programs for companies.
+            You are an AI assistant that supports government program analysis for companies.
+            The user's intent has been classified as: {mode}
+            
+            If the mode is `recommend`, follow these instructions:
 
-            You must perform two tasks:
-            1. Recommend the most relevant support programs for the company based on the retrieved documents and the provided company profile.
-            2. Summarize the key details of the selected support programs in a clear and concise manner.
+            - Recommend the most relevant government support programs for the company using the retrieved documents and the company's profile.
+            - Use the following metadata fields (if present) to construct complete Korean sentences:
+            - Program Name (pblancNm)
+            - Application Period (reqstBeginEndDe)
+            - Business Overview Contents (bsnsSumryCn)
+            - Target Audience (trgetNm)
+            - Program URL (pblancUrl)
+            - Include key details from `page_content` such as eligibility, scope, funding, or specific support terms.
+            - Do not skip any available metadata fields. Write them out in full sentences.
+            - If no relevant programs are found, say so clearly. Otherwise, do not mention this.
+            - At the end of each program, show the full URL prefixed with 👉. If `pblancUrl` is a relative path (e.g., starts with `/web/...`), prepend `https://www.bizinfo.go.kr`.
 
-            The metadata included in each document (such as program name, field, region, contact information, url, cost etc.) is critical.
-            Please analyze and utilize it to generate more accurate recommendations and summaries.
+            If the mode is `summarize`, follow these instructions:
 
-            If none of the programs match the company's profile, say you couldn't find a suitable one.
-            **However, if any relevant programs are recommended, do not include such a message.**
+            - Provide a summary of the support programs found in the documents, regardless of company information.
+            - Focus on condensing the key content from `page_content`, including funding, purpose, and eligibility.
+            - Do not include user metadata or match recommendations.
+            - You must include all available metadata fields (pblancNm, reqstBeginEndDe, bsnsSumryCn, trgetNm, pblancUrl) in full Korean sentences.
+            - End each program's summary with the full link prefixed by 👉, converting relative URLs as noted.
 
+            ---
 
             [Company Information]
             - Company Name: {user_name}
@@ -218,14 +244,16 @@ def create_chain():
             - Location: {user_location}
             - Number of Employees: {user_employees}
             - Annual Sales Range: {user_sales}
-
+            - Business Industry: {user_industry}
+            - Company Types: {user_types}    
+            
             [User Question]
             {question}
 
             [Retrieved Support Program Documents]
             {context}
 
-            Answer in Korean.
+            Respond in Korean.
             """
         )
        
@@ -260,6 +288,9 @@ def create_chain():
                 "user_location": RunnablePassthrough(),
                 "user_employees": RunnablePassthrough(),
                 "user_sales": RunnablePassthrough(),
+                "user_industry": RunnablePassthrough(),   
+                "user_types": RunnablePassthrough(),
+                "mode": RunnablePassthrough(),
             }
             | prompt
             | llm
@@ -277,6 +308,34 @@ def create_chain():
     except Exception as e:
         logger.error(f"❌ Error creating LangChain chain with RAG: {e}")
         raise RuntimeError("Failed to create LangChain chain with RAG")
+
+
+## 분류 체인
+def classifier_chain() :
+    
+    classification_prompt = PromptTemplate.from_template(
+    """
+    다음 사용자의 질문을 읽고 아래 중 하나를 정확히 선택하세요:
+
+    - recommend: 우리 회사에 적합한 정부 지원사업을 추천해달라는 질문인 경우
+    - summarize: 특정 지원사업의 내용을 요약해달라는 질문인 경우
+
+    반드시 위 단어 중 하나만 출력하세요. 그 외 문장이나 설명 없이 `recommend` 또는 `summarize` 중 하나로만 응답해야 합니다.
+
+    [질문]
+    {question}
+    """)
+            # 모델 인스턴스
+    llm = ChatOpenAI(
+        openai_api_key=api_key,
+        temperature=0.0,  # 분류용은 변동성 제거!
+        model_name="gpt-3.5-turbo"
+    )
+
+    # 분류 체인
+    classifier_chain = classification_prompt | llm | StrOutputParser()
+    
+    return classifier_chain
 
 
 if __name__ == "__main__":

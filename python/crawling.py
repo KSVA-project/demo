@@ -35,7 +35,7 @@ def init_chrome_driver(driver_path: str) -> webdriver.Chrome:
     return driver
 
 # [3] 지원사업 공고 크롤링 및 파일 다운로드 함수
-def crawl_bizinfo_notices(driver, pdf_folder="./original", end_page=29):
+def crawl_bizinfo_notices(driver, pdf_folder="./original", end_page=2):
     
     """
     기업마당 사이트에서 지원사업 공고문 PDF/HWP 파일을 크롤링하여 저장하고,
