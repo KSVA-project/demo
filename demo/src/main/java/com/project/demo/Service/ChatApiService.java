@@ -75,10 +75,32 @@ public class ChatApiService {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        // 요청 데이터는 JSON 형태라고 서버에 알려줌
+        
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(request, headers);
-
+        // HttpEntity: HTTP 요청의 본문(body) 와 headers를 묶은 객체
+        
+        
         // 4. FastAPI로 요청 전송
         ResponseEntity<Map> response = restTemplate.postForEntity(fastApiBaseUrl, entity, Map.class);
+        // entity: 보낼 데이터 + 헤더
+        // Map.class : 응답을 Map 타입으로 받겠다.
+
+        // ResponseEntity<Map> response: HTTP 응답의 상태 코드 + 헤더 + 본문을 포함
+        // [1] response.getStatusCode()  // 200 (성공)
+        // [2] response.getHeaders()
+            // Content-Type: application/json
+            // Content-Length: 150
+            // Date: 2024-01-01T10:00:00Z
+            // 등등...
+        // [3] response.getBody()
+            // {
+            //  "response": "추천 지원사업은 다음과 같습니다...",
+            //   "croomIdx": 123,
+            //   "chatter": "ChatBot",
+            //   "createdAt": "2024-01-01T10:00:00Z"
+            // }
+
         Map<String, Object> responseBody = response.getBody();
         System.out.println("FastAPI 응답: " + responseBody);
 

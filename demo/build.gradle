@@ -5,11 +5,11 @@ plugins {
 }
 
 group = 'com.project'
-version = '0.0.4-SNAPSHOT'
+version = '0.0.5-SNAPSHOT'
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
+		languageVersion = JavaLanguageVersion.of(21)
 	}
 }
 

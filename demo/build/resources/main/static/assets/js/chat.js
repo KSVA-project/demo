@@ -435,6 +435,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 messages.scrollTop = messages.scrollHeight;
 
                 // 2. 메시지 전송 및 저장
+                // JavaScript에서 HTTP 요청을 보낼 수 있게 해주는 클라이언트 측 함수
                 const sendMsgRes = await fetch('/api/chat/message', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
@@ -657,6 +658,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     // 기존 목록은 유지하면서 새 채팅방만 위에 추가
                     const newItem = createChatItem(newRoom.croomTitle, newRoom.croomIdx);
                     chatList.prepend(newItem);
+
+                    await loadChatRooms();
 
                 }
 

@@ -319,7 +319,6 @@ def create_chain():
                 """
 
         # 개선된 프롬프트 - 사용자 정보 활용 강화
-         # 개선된 프롬프트 - 더욱 자세한 정보 제공
         prompt = PromptTemplate.from_template(
             """
             당신은 정부지원사업 전문 AI 컨설턴트입니다. 

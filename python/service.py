@@ -13,7 +13,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import Chroma
 from chromadb import PersistentClient
 from dotenv import load_dotenv
-
+from collections import defaultdict 
 import io
 from pdf2image import convert_from_path
 from google.cloud import vision
@@ -30,12 +30,27 @@ gcp_key = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 # Google Cloud Vision 클라이언트 생성
 client = vision.ImageAnnotatorClient()
 
+# device 확인
+import torch
+def get_device():
+    """GPU 사용 가능 여부를 확인하고 적절한 device 반환"""
+    if torch.cuda.is_available():
+        device = 'cuda'
+        gpu_count = torch.cuda.device_count()
+        gpu_name = torch.cuda.get_device_name(0)
+        print(f"✅ GPU 사용 가능: {gpu_name} ({gpu_count}개)")
+    else:
+        device = 'cpu'
+        print("⚠️ GPU 불가능, CPU 사용")
+
+
 # 임베딩 모델 로드
 def load_embeddings_model():
     """ko-sroberta-nli 기반 HuggingFace 임베딩 모델 불러오기"""
+    device = get_device()
     return HuggingFaceEmbeddings(
         model_name='jhgan/ko-sroberta-nli',
-        model_kwargs={'device': 'cpu'},  # GPU 사용 시 'cuda'로 변경
+        model_kwargs={'device': device},  # GPU 사용 시 'cuda'로 변경
         encode_kwargs={'normalize_embeddings': True},
     )
 
@@ -98,22 +113,58 @@ def extract_text_from_pdf(pdf_path, existing_hashes=None):
 
 # OCR된 text_by_page를 split documents로 반환
 def split_text_to_documents(text_by_page, file_hash, file_name, matched_df=None):
-      
+    """
+    OCR된 텍스트를 문서로 분할하고 메타데이터를 추가합니다.
+    
+    Args:
+        text_by_page: 페이지별 OCR 텍스트 리스트
+        file_hash: 파일 해시값
+        file_name: 확장자 제거된 파일명
+        matched_df: API에서 가져온 매칭된 메타데이터 DataFrame
+        
+    Returns:
+        tuple: (split_documents, file_hash) 또는 (None, None)
+    """
+    
     documents = []
     meta_row = None # 해당 PDF 파일명에 해당하는 메타데이터 행 추출
     
-    if matched_df is not None:
-        match = matched_df[matched_df["pblancNm"]== file_name]
+    # 해당 파일명에 맞는 메타데이터 찾기
+    if matched_df is not None and not matched_df.empty:
+        # 정확한 매칭 확인
+        match = matched_df[matched_df["pblancNm"] == file_name]
+        
         if not match.empty:
             meta_row = match.iloc[0].to_dict()
+            print(f"✔️ 메타데이터 매칭 성공: {file_name}")
+        else:
+            print(f"⚠️ 메타데이터 매칭 실패: {file_name}")
+            # 디버깅을 위해 사용 가능한 공고명들 출력
+            available_names = matched_df["pblancNm"].tolist()
+            print(f"[DEBUG] 사용 가능한 공고명: {available_names[:5]}")
 
+    # 각 페이지별로 문서 생성
     for i, text in enumerate(text_by_page):
+        
+        # 빈 페이지는 건너뛰기
+        if not text.strip():
+            continue
+        
         page_num = i + 1
-        metadata = {"page": page_num, 
-                    "pblancNm": file_name, 
-                    "file_hash": file_hash}
+        
+        # 기본 메타데이터
+        metadata = {
+            "page": page_num, 
+            "pblancNm": file_name, 
+            "file_hash": file_hash
+        }
+        
+        # API 메타데이터 추가
         if meta_row:
+            # 기본 메타데이터를 먼저 설정하고, API 데이터로 업데이트
             metadata.update(meta_row)
+            # pblancNm은 파일명으로 유지 (API 데이터로 덮어쓰지 않음)
+            metadata["pblancNm"] = file_name
 
         doc = Document(
             page_content=text,
@@ -146,7 +197,19 @@ def process_cached_txt_files(root_dir="./data", chroma_root="./chroma_db"):
 
     # 기업마당 메타데이터 matched_df 불러오기
     api_data = get_bizinfo_data_by_hashtags()
-    matched_df = filter_matched_bizinfo(api_data, folder_path=root_dir)
+    
+    if not api_data:
+        print("⚠️ API 데이터를 가져올 수 없습니다. 메타데이터 없이 진행합니다.")
+        matched_df = None
+    else:
+        print("🔍 로컬 파일과 매칭 중...")
+        matched_df = filter_matched_bizinfo(api_data, folder_path=root_dir)
+        
+        if matched_df.empty:
+            print("⚠️ 매칭되는 파일이 없습니다. 메타데이터 없이 진행합니다.")
+            matched_df = None
+        else:
+            print(f"✔️ {len(matched_df)}개 파일의 메타데이터를 찾았습니다.")
 
     # ChromaDB 초기화
     # PersistentClient: ChromaDB를 디스크에 지속적으로 저장하기 위한 클라이언트
@@ -179,6 +242,8 @@ def process_cached_txt_files(root_dir="./data", chroma_root="./chroma_db"):
     }
     # if meta and "file_hash" in meta ->  meta가 None이 아니고, "file_hash"라는 키를 퐇함하고 있을 경우에만 실행
     
+    all_documents = []
+    
     for dirpath, _, filenames in os.walk(root_dir):
     # dirpath: 현재 폴더 경로 / _ : 이 변수는 사용 안할꺼라고 선언 / filenames: 파일 리스트  
         
@@ -210,15 +275,37 @@ def process_cached_txt_files(root_dir="./data", chroma_root="./chroma_db"):
                     matched_df=matched_df
                 )
                 
-                if not split_docs:
-                    continue
-                
-                # Step 3: 벡터 DB 저장
-                vectorstore.add_documents(split_docs)
-                print(f"✅ 저장됨: {filename} ({len(split_docs)} 청크)")
+                if split_docs:
+                    all_documents.extend(split_docs)  # ✅ 모든 문서 수집
+                    print(f"📄 OCR 처리됨: {filename} ({len(split_docs)} 청크)")
                 
             except Exception as e:
                 print(f"❌ 오류 발생 - {pdf_path}: {e}")
+                
+    print(f"📦 전체 OCR 처리된 문서: {len(all_documents)}개 청크")
+    documents_to_save = all_documents  # 모든 문서 저장
+    
+    # ✅ 그룹화 및 저장 (중복 방지)
+    
+    doc_groups = defaultdict(list)
+    for doc in documents_to_save:
+        title = doc.metadata.get("pblancNm")
+        doc_groups[title].append(doc)
+
+    added_count = 0
+    for title, doc_list in doc_groups.items():
+        file_hash = doc_list[0].metadata.get("file_hash")
+        if file_hash in existing_hashes:
+            print(f"⏩ 이미 저장된 파일: {title} (hash: {file_hash}) → 스킵됨")
+            continue
+
+        vectorstore.add_documents(doc_list)
+        added_count += 1
+        print(f"✅ 벡터DB 저장됨: {title} ({len(doc_list)} 청크)")
+
+    print(f"\n📦 최종 저장 완료: {added_count}개 문서 (중복 제외)")
+    print(f"🎯 전체 처리: {len(all_documents)}개 청크")
+    print(f"🎯 벡터DB 저장: {len(documents_to_save)}개 청크")
 
 ### 랩퍼 함수
 def run_service():

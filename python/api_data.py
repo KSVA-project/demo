@@ -46,7 +46,7 @@ def get_bizinfo_data_by_hashtags():
 
 
 ## ✅ 로컬 PDF 파일명과 일치하는 공고만 DataFrame으로 반환
-def filter_matched_bizinfo(data, folder_path='./data'):
+def filter_matched_bizinfo(data, folder_path, file_ext=".pdf"):
     """
     공고명이 로컬 폴더 내 파일 이름과 일치하는 지원사업 정보만 필터링하여 DataFrame으로 반환합니다.
     Args:
@@ -63,16 +63,35 @@ def filter_matched_bizinfo(data, folder_path='./data'):
     # 공고 리스트를 DataFrame으로 변환
     df = pd.DataFrame(data)
 
-    # 로컬 파일 목록 불러오기
+    # 로컬 PDF 파일 목록을 재귀적으로 수집 (중첩 폴더 포함)
+    pdf_file_names = set()
+    
     try:
-        file_names = set(os.listdir(folder_path))
-        file_titles = {os.path.splitext(f)[0] for f in file_names}
+        for root, dirs, files in os.walk(folder_path):
+            for file in files:
+                if file.lower().endswith(file_ext):
+                    # 확장자 제거한 파일명 추가
+                    file_name_without_ext = os.path.splitext(file)[0]
+                    pdf_file_names.add(file_name_without_ext)
+                    
+        print(f"[DEBUG] 발견된 PDF 파일 수: {len(pdf_file_names)}")
+        
     except FileNotFoundError:
         print(f"❌ 폴더 경로 '{folder_path}'를 찾을 수 없습니다.")
         return pd.DataFrame()
 
+    # 'pblancNm' 컬럼이 있는지 확인
+    if 'pblancNm' not in df.columns:
+        print("❌ API 데이터에 'pblancNm' 컬럼이 없습니다.")
+        print(f"사용 가능한 컬럼: {df.columns.tolist()}")
+        return pd.DataFrame()
+
     # 공고명 기준으로 매칭
-    matched_df = df[df['pblancNm'].isin(file_titles)]
+    matched_df = df[df['pblancNm'].isin(pdf_file_names)]
+    
+    print(f"[DEBUG] 매칭된 공고 수: {len(matched_df)}")
+    if len(matched_df) > 0:
+        print(f"[DEBUG] 매칭된 공고명: {matched_df['pblancNm'].tolist()}")
 
     # 필요한 컬럼만 추출
     columns_to_extract = [
